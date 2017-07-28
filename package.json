@@ -1,0 +1,29 @@
+{
+  "name": "aurelia-typescript-webpack-chrome-extension",
+  "version": "0.1.0",
+  "description": "A starter kit for a Chrome Extension built with Aurelia and Typescript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "author": "Tim Turner",
+  "license": "ISC",
+  "dependencies": {
+    "aurelia-bootstrapper": "^2.1.1",
+    "aurelia-framework": "^1.1.4"
+  },
+  "devDependencies": {
+    "@types/webpack": "^3.0.5",
+    "@types/webpack-env": "^1.13.0",
+    "aurelia-webpack-plugin": "^2.0.0-rc.3",
+    "copy-webpack-plugin": "^4.0.1",
+    "html-loader": "^0.5.0",
+    "style-loader": "^0.18.2",
+    "ts-loader": "^2.3.2",
+    "ts-node": "^3.3.0",
+    "typescript": "^2.4.2",
+    "webpack": "^3.4.1",
+    "webpack-chrome-extension-reloader": "^0.4.0"
+  }
+}

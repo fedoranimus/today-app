@@ -1,0 +1,14 @@
+{
+    // Required
+    "manifest_version": 2,
+    "name": "Today",
+    "version": "0.1.0",
+
+    // Recommended
+    "description": "Today Extension",
+
+    "author": "Tim Turner",
+    "chrome_url_overrides": {
+        "newtab": "index.html"
+    }
+}
