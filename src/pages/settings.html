@@ -1,2 +1,24 @@
-<template>
+<template class="settings">
+    <div class="container">
+        <h1>Welcome, ${fullName}</h1>
+
+        <h2>Project Locations</h2>
+        <div repeat.for="projectLocation of projectLocations">${projectLocation.projectName}</div>
+
+        <span if.bind="!editProjectLocations">
+            <a click.delegate="toggleProjectLocationEdit()">edit</a>
+        </span>
+        <span if.bind="editProjectLocations">
+            <a click.delegate="toggleProjectLocationEdit()">done</a>
+        </span>
+
+        <form if.bind="editProjectLocations" submit.delegate="addProject()">
+            <select value.bind="selectedProject">
+                <option repeat.for="project of projects" model.bind="project">${project.name}</option>
+            </select>
+            <button type="submit">Add Project</button>
+        </form>
+    </div>
+
+    <a class="home-link" route-href="route: home">Back to app</a>
 </template>

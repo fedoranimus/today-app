@@ -45,4 +45,9 @@ export class TodoService {
         const sync = await this.todoist.sync();
         return sync.projects;
     }
+
+    async getUser(): Promise<any> {
+        const sync = await this.todoist.sync();
+        return sync.user;
+    }
 }

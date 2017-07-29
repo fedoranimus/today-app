@@ -20,7 +20,23 @@ router-view {
     justify-content: center;
 }
 
+a {
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 .settings-link {
+    position: fixed;
+    top: 1em;
+    right: 1em;
+}
+
+.home-link {
     position: fixed;
     top: 1em;
     right: 1em;

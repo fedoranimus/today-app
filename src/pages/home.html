@@ -5,7 +5,7 @@
   <div class="container">
     <span class="header">Today
       <span if.bind="hasActiveProject"> ${activeProject}</span>
-      <span if.bind="!hasActiveProject" class="add-project-location" click.delegate="addProjectLocation()">Set Location</span>
+      <a if.bind="!hasActiveProject" class="add-project-location" route-href="route: settings">Set Location</a>
     </span>
 
     <task-list></task-list>

@@ -5,6 +5,7 @@ import { Storage } from './storage';
 
 export interface IProjectLocation {
     projectId: number;
+    projectName: string;
     projectLocation: Position;
 }
 
@@ -24,6 +25,8 @@ export class User {
 
     private _projectLocations: IProjectLocation[] = [];
 
+    private _overrideProject: number;
+
 
     constructor(private container: Container, private storage: Storage) {
         this.init();
@@ -31,6 +34,7 @@ export class User {
 
     private async init() {
         const settings = await this.storage.get(null);
+        this._projectLocations = (<any>settings).projectLocations;
         console.log('Saved Settings', settings);
 
         navigator.geolocation.getCurrentPosition((position) => {
@@ -38,12 +42,29 @@ export class User {
         });
     }
 
-    addProjectLocation(projectId: number) {
+    addProjectLocation(projectId: number, projectName: string) {
+        console.log(projectId, projectName, this._currentLocation, this._projectLocations);
+        if(!this._projectLocations.some((element) => {
+            return element.projectId === projectId || this.getNearestProject(this._currentLocation) !== null; 
+        })) {
+            console.debug("pushing project");
+            this._projectLocations.push({ projectId: projectId, projectName: projectName, projectLocation: this._currentLocation });
+        }
+
+        this.storage.set({ projectLocations: this._projectLocations });
 
     }
 
     removeProjectLocation(projectId: number) {
+        this._projectLocations = this._projectLocations.filter(obj => { 
+            return obj.projectId !== projectId;
+        });
 
+        this.storage.set({ projectLocations: this._projectLocations });
+    }
+
+    get projectLocations() {
+        return this._projectLocations;
     }
 
     get currentProject() {

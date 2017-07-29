@@ -37,7 +37,13 @@ const config: webpack.Configuration = {
         {
             test: /\.html$/i,
             use: 'html-loader'  
-        }]
+        },
+        {
+            enforce: 'pre',
+            test: /\.js$/,
+            use: 'source-map-loader'
+        }
+    ]
     },
     plugins: [
         new AureliaPlugin({
