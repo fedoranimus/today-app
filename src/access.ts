@@ -3,7 +3,7 @@ import { autoinject, PLATFORM, Aurelia, useView } from 'aurelia-framework';
 import { ConfiguresRouter, Router, RouterConfiguration } from 'aurelia-router';
 import { Container } from 'aurelia-dependency-injection';
 import TodoistAPI from 'todoist-js';
-import { Application } from './services/application';
+import { TodoService } from './services/todoService';
 
 @useView('./app.html')
 @autoinject
@@ -12,7 +12,7 @@ export class Access implements ConfiguresRouter {
     private apiKey: string;
     private todoist: any;
 
-    constructor(private storage: Storage, private container: Container, private router: Router, private aurelia: Aurelia, private application: Application) {}
+    constructor(private storage: Storage, private container: Container, private router: Router, private aurelia: Aurelia, private todoService: TodoService) {}
 
     configureRouter(config: RouterConfiguration, router: Router) {
         config.title = "Today";
@@ -26,7 +26,7 @@ export class Access implements ConfiguresRouter {
         this.apiKey = keyInput;
         await this.storage.set({ todoistToken: this.apiKey });
         
-        this.application.apiToken = this.apiKey;
+        this.todoService.apiToken = this.apiKey;
 
         this.router.navigate('/', { replace: true, trigger: false });
         this.router.reset();
