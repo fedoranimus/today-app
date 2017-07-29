@@ -1,0 +1,6 @@
+<template>
+    <form if.bind="!hasKey" submit.delegate="registerApiKey()">
+        <input placeholder="Api Token" value.bind="keyInput">
+        <button type="submit">Submit</button>
+    </form>
+</template>

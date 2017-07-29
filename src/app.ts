@@ -1,5 +1,5 @@
 import { PLATFORM } from 'aurelia-framework';
-import { ConfiguresRouter, Router, RouterConfiguration} from 'aurelia-router';
+import { ConfiguresRouter, Router, RouterConfiguration } from 'aurelia-router';
 
 export class App implements ConfiguresRouter {
     configureRouter(config: RouterConfiguration, router: Router) {

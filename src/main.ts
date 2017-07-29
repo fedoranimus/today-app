@@ -1,39 +1,27 @@
 import { Aurelia, PLATFORM } from 'aurelia-framework';
-import { HttpClient } from 'aurelia-fetch-client';
-import { OAuthService, OAuthTokenService } from 'aurelia-oauth';
+import { Storage } from './services/storage';
+import { Application } from './services/application';
+import TodoistAPI from 'todoist-js';
 
-export function configure(aurelia: Aurelia): void {
-    const httpClient = <HttpClient>aurelia.container.get(HttpClient);
-    
+export function configure(aurelia: Aurelia): void {    
     aurelia.use
         .standardConfiguration()
-        .developmentLogging()
-        .plugin(PLATFORM.moduleName('aurelia-oauth'), (oauthService: OAuthService, oauthTokenService: OAuthTokenService, configureClient: any) =>
-            configureOAuth(oauthService, oauthTokenService, configureClient, httpClient));
+        .developmentLogging();
 
+    const storage = <Storage>aurelia.container.get(Storage);
 
-    aurelia.start().then(() => aurelia.setRoot(PLATFORM.moduleName('app')));
-}
-
-function configureOAuth(oauthService: OAuthService, oauthTokenService: OAuthTokenService, configureClient: (client: any) => void, client: any) {
-    oauthService.configure(
-        {
-            loginUrl: 'https://todoist.com/oauth/authorize',
-            logoutUrl: '',
-            clientId: 'bdf2c7fb5a1e4467af686143ea008331', //TODO: Put this in a config file
-            scope: 'data:read_write',
-            state: 'secretstring' //TODO: Put this in a config file
-        }
-    );
-
-    oauthTokenService.configure(
-        {
-            name: 'token id_token',
-            urlTokenParameters: {
-                idToken: 'id_token'
+    aurelia.start().then( async () => {
+        const items = await storage.get("todoistToken"); //TODO Validate the key against Todoist
+        const hasKey = Object.keys(items).length > 0 ? true : false;
+        if(!hasKey)
+            aurelia.setRoot(PLATFORM.moduleName('access'));
+        else {
+            const application = <Application>aurelia.container.get(Application);
+            const items = await storage.get('todoistToken');
+            if(Object.keys(items).length > 0) {
+                application.apiToken = (<any>items)['todoistToken'];
+                aurelia.setRoot(PLATFORM.moduleName('app'));
             }
         }
-    );
-
-    configureClient(client);
+    });
 }
