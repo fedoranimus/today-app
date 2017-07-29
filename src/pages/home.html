@@ -1,9 +1,14 @@
 <template>
-  <h1>Today</h1>
+  <require from="../components/tasks/task-list/task-list"></require>
+  <require from="../components/tasks/pending-list/pending-list"></require>
+  <require from="./home.css"></require>
+  <div class="container">
+    <span class="header">Today
+      <span if.bind="hasActiveProject"> ${activeProject}</span>
+      <span if.bind="!hasActiveProject" class="add-project-location" click.delegate="addProjectLocation()">Set Location</span>
+    </span>
 
-  <div>${karma}</div>
-  <ul>
-    <li repeat.for="task of tasks">${task.content}</li>
-  </ul>
-
+    <task-list></task-list>
+  </div>
+  <a class="settings-link" route-href="route: settings">Settings</a>
 </template>

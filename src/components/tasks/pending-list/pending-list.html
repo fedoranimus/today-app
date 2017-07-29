@@ -1,0 +1,6 @@
+<template>
+    <require from="./pending-list.css"></require>
+    <div show.bind="!hasTask" class="pending-task-zero-state" drop.trigger="drop($event)" dragover.trigger="allowDrop($event)">
+        Drag a Task Here
+    </div>
+</template>

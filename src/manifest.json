@@ -12,6 +12,7 @@
         "newtab": "index.html"
     },
     "permissions": [
-        "storage"
+        "storage",
+        "geolocation"
     ]
 }

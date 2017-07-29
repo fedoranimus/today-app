@@ -32,7 +32,7 @@ const config: webpack.Configuration = {
         {
             test: /\.css$/i,
             issuer: /\.html?$/i,
-            use: 'style-loader'
+            use: 'css-loader'
         },
         {
             test: /\.html$/i,

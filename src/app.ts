@@ -6,7 +6,8 @@ export class App implements ConfiguresRouter {
         config.title = "Today";
 
         config.map([
-            { route: '', moduleId: PLATFORM.moduleName('./pages/home'), name: 'home' }
+            { route: '', moduleId: PLATFORM.moduleName('./pages/home'), name: 'home' },
+            { route: 'settings', moduleId: PLATFORM.moduleName('./pages/settings'), name: 'settings'}
         ]).mapUnknownRoutes(PLATFORM.moduleName('./pages/not-found'));
     }
 }

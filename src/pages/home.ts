@@ -1,6 +1,7 @@
 import { autoinject, Aurelia } from 'aurelia-framework';
 import { Storage } from '../services/storage';
 import { TodoService } from '../services/todoService';
+import { User } from '../services/user';
 
 @autoinject
 export class Home {
@@ -10,7 +11,7 @@ export class Home {
     karma: any;
     isPremium: boolean = false;
 
-    constructor(private aurelia: Aurelia, private todoService: TodoService) {
+    constructor(private aurelia: Aurelia, private todoService: TodoService, private user: User) {
         this.init();
     }
 
@@ -19,8 +20,14 @@ export class Home {
         this.karma = stats.karma;
         console.log(await this.todoService.sync());
         const sync = await this.todoService.sync();
-        this.isPremium = sync.isPremium;
-        this.tasks = await this.todoService.getTodayTasks();
-        
+        this.isPremium = sync.isPremium;        
+    }
+
+    get hasActiveProject(): boolean {
+        return false;
+    }
+
+    addProjectLocation() {
+        //this.user.addProjectLocation();
     }
 }

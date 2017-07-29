@@ -23,6 +23,7 @@
     "@types/webpack-env": "^1.13.0",
     "aurelia-webpack-plugin": "^2.0.0-rc.3",
     "copy-webpack-plugin": "^4.0.1",
+    "css-loader": "^0.28.4",
     "html-loader": "^0.5.0",
     "style-loader": "^0.18.2",
     "ts-loader": "^2.3.2",

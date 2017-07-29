@@ -1,6 +1,6 @@
 import { Aurelia, PLATFORM } from 'aurelia-framework';
 import { Storage } from './services/storage';
-import { TodoService } from './services/todoService';
+import { User } from './services/user';
 import TodoistAPI from 'todoist-js';
 
 export function configure(aurelia: Aurelia): void {    
@@ -16,10 +16,10 @@ export function configure(aurelia: Aurelia): void {
         if(!hasKey)
             aurelia.setRoot(PLATFORM.moduleName('access'));
         else {
-            const todoService = <TodoService>aurelia.container.get(TodoService);
+            const user = <User>aurelia.container.get(User);
             const items = await storage.get('todoistToken');
             if(Object.keys(items).length > 0) {
-                todoService.apiToken = (<any>items)['todoistToken'];
+                user.apiToken = (<any>items)['todoistToken'];
                 aurelia.setRoot(PLATFORM.moduleName('app'));
             }
         }

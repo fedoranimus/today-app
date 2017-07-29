@@ -3,21 +3,16 @@ import { Container } from 'aurelia-dependency-injection';
 import TodoistAPI from 'todoist-js';
 import { Storage } from './storage';
 import * as moment from 'moment';
+import { Project } from '../infrastructure/todoist';
 
 @autoinject
 export class TodoService {
     private todoist: any;
-    private token: string;
     
-
     constructor(private container: Container, private storage: Storage) {
         this.todoist = this.container.get(TodoistAPI);
+        console.log(this.todoist);
     }
-
-    // private async init() {
-    //     const items = await this.storage.get("todoistToken"); //TODO Validate the key against Todoist
-
-    // }
 
     async isPremium(): Promise<boolean> {
         return this.todoist.get_user().is_premium;
@@ -41,14 +36,13 @@ export class TodoService {
         return items;
     }
 
-    get apiToken() {
-        return this.token;
+    async getTasks(): Promise<any> {
+        const sync = await this.todoist.sync();
+        return sync.items;
     }
 
-    set apiToken(apiToken: string) {
-        this.token = apiToken;
-        this.container.unregister(TodoistAPI);
-        this.container.registerInstance(TodoistAPI, new TodoistAPI(this.token));
-        this.todoist = this.container.get(TodoistAPI);
+    async getProjects(): Promise<Project[]> {
+        const sync = await this.todoist.sync();
+        return sync.projects;
     }
 }

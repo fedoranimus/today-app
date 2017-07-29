@@ -1,0 +1,21 @@
+.task-item {
+    border-bottom: thin sold gray;
+    padding: .5em 0;
+}
+
+.task-item:hover {
+    background-color: var(--hover-color);
+}
+
+.task-focus-button {
+    display: none;
+}
+
+.task-focus-button:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.task-item:hover .task-focus-button {
+    display: inline-block;
+}
