@@ -1,16 +1,15 @@
 <template class="settings">
     <require from="./settings.css"></require>
+    <require from="./project-item"></require>
     <require from="./project-editor"></require>
     <div class="container">
         <h1>Welcome, ${fullName}</h1>
 
-        <h2>Project Locations</h2> <a click.delegate="toggleProjectLocationEdit()">edit</a>
-        <div class="project-location" repeat.for="projectLocation of projectLocations">
-            <span>${projectLocation.name}</span>
-            <span if.bind="projectLocation.name === activeProject.name" class="active-project">Active</span>
-            <a class="project-edit-link" click.delegate="editProject(projectLocation.name)">Edit</a>
-            <a class="project-edit-link" click.delegate="deleteProject(projectLocation.name)">Delete</a>
+        <span class="project-locations-header">Project Locations <a class="add-project-location" click.delegate="addProjectLocation()">+</a></span>
+        <div class="project-locations" repeat.for="projectLocation of projectLocations">
+            <project-item project-location.bind="projectLocation" active-project="activeProject"></project-item>
         </div>
+        <project-editor if.bind="editProjectLocations" projects.bind="projects" project-location.bind="projectLocation" active-project.bind="activeProject"></project-editor>
     </div>
 
     <a class="home-link" route-href="route: home">Back to app</a>

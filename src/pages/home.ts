@@ -1,7 +1,7 @@
 import { autoinject, Aurelia } from 'aurelia-framework';
 import { Storage } from '../services/storage';
 import { TodoService } from '../services/todoService';
-import { User, IActiveProjectLocation } from '../services/user';
+import { User, IProjectLocation } from '../services/user';
 
 @autoinject
 export class Home {
@@ -10,7 +10,7 @@ export class Home {
     tasks: any[];
     karma: any;
     isPremium: boolean = false;
-    activeProject: IActiveProjectLocation | null = null;
+    activeProject: IProjectLocation | null = null;
 
     constructor(private aurelia: Aurelia, private todoService: TodoService, private user: User) {
         this.init();

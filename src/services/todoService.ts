@@ -4,7 +4,7 @@ import TodoistAPI from 'todoist-js';
 import { Storage } from './storage';
 import * as moment from 'moment';
 import { Project } from '../infrastructure/todoist';
-import { User, IActiveProjectLocation, IProjectLocation, IProject } from './user';
+import { User, IProjectLocation, IProject } from './user';
 
 @autoinject
 export class TodoService {
@@ -37,12 +37,12 @@ export class TodoService {
         return items;
     }
 
-    async getTasks(activeProjectLocation: IActiveProjectLocation | null = null): Promise<any> {
+    async getTasks(activeProjectLocation: IProjectLocation | null = null): Promise<any> {
         const sync = await this.todoist.sync();
         console.log(activeProjectLocation);
         if(activeProjectLocation) {
             return sync.items.filter((item: any) => {
-                return item.project_id === activeProjectLocation.projectLocation.projects.find(y => y.projectId == item.project_id);
+                return item.project_id === activeProjectLocation.projects.find(y => y.projectId == item.project_id);
             });
         } else {
             return sync.items;

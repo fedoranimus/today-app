@@ -4,7 +4,7 @@
   <require from="./home.css"></require>
   <div class="container">
     <span class="header">Today
-      <span if.bind="hasActiveProject"> - ${activeProject.projectName}</span>
+      <span if.bind="hasActiveProject"> - ${activeProject.name}</span>
       <a if.bind="!hasActiveProject" class="add-project-location" route-href="route: settings">Set Location</a>
     </span>
 

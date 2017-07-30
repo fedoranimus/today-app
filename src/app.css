@@ -7,12 +7,17 @@
 body {
     background-color: var(--background-color);
     color: var(--text-color);
+    font-size: 1.1em;
 }
 
 .container {
     display: flex;
     flex-direction: column;
-    flex-basis: 960px;
+    flex-basis: 560px;
+}
+
+input {
+    color: var(--background-color);
 }
 
 router-view {
@@ -40,4 +45,14 @@ a:hover {
     position: fixed;
     top: 1em;
     right: 1em;
+}
+
+.activate {
+    display: flex;
+    flex-direction: column;
+}
+
+.center-align-child {
+    display: flex;
+    align-items: center;
 }

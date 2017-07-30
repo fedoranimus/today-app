@@ -3,7 +3,7 @@ import { autoinject } from 'aurelia-framework';
 
 @autoinject
 export class Activate {
-    keyInput: string;
+    keyInput: string = "";
 
     constructor(private access: Access) {
 
@@ -11,5 +11,9 @@ export class Activate {
 
     async registerApiKey() {
         this.access.registerApiKey(this.keyInput);
+    }
+
+    get isKeyValid() {
+        return this.keyInput.length === 40 ? true : false;
     }
 }

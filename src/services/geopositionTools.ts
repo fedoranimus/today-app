@@ -1,36 +1,31 @@
-import { User, IActiveProjectLocation } from './user';
-import { autoinject } from 'aurelia-framework';
+import { User, IProjectLocation } from './user';
 
-@autoinject
 export class GeopositionTools {
-    constructor(private user: User) {
 
-    }
-
-    getNearestProject(currentLocation: Position): IActiveProjectLocation | null {
-        let projectLocations: IActiveProjectLocation[] = [];
-        this.user.projectLocations.forEach((project) => {
+    static getNearestProject(currentLocation: Position, user: User): IProjectLocation | null {
+        let projectDistances: { projectLocation: IProjectLocation, distance: number }[] = [];
+        user.projectLocations.forEach((project) => {
             const distance = this.calculateHaversineDistance(currentLocation, project.location);
-            if(distance < this.user.locationThreshold) {
-                projectLocations.push({ name: project.name, projectLocation: project, distance: distance });
+            if(distance < user.locationThreshold) {
+                projectDistances.push({ projectLocation: project, distance: distance });
             }
         });
 
-        if(projectLocations.length > 0) {
-            projectLocations.sort((a, b) => {
+        if(projectDistances.length > 0) {
+            projectDistances.sort((a, b) => {
                 return a.distance - b.distance;
             });
-            return projectLocations[0];
+            return projectDistances[0].projectLocation; //nearest projectLocation
         } else {
             return null;
         }
     }
 
-    private toRad(x: number) {
+    private static toRad(x: number) {
         return x * Math.PI / 180;
     }
 
-    private calculateHaversineDistance(currentLocation: Position, savedLocation: Position) {
+    private static calculateHaversineDistance(currentLocation: Position, savedLocation: Position) {
         const R = 6371;
         const dLat = this.toRad(savedLocation.coords.latitude - currentLocation.coords.latitude);
         const dLong = this.toRad(savedLocation.coords.longitude - currentLocation.coords.longitude);
@@ -44,7 +39,7 @@ export class GeopositionTools {
         return Math.round(d);
     }
 
-    geopositionToObject(geoposition: Position) {
+    static geopositionToObject(geoposition: Position) {
         return {
             timestamp: geoposition.timestamp,
             coords: {
@@ -58,4 +53,12 @@ export class GeopositionTools {
             }
         }
     }
+
+    static getCurrentLocation(options: any = null): Promise<Position> {
+        return new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(resolve, ({code, message}) =>
+                reject(Object.assign(new Error(message), {name: "PositionError", code})),
+                options);
+        });
+};
 }

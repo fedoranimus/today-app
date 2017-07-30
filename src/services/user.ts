@@ -15,11 +15,11 @@ export interface IProject {
     projectName: string;
 }
 
-export interface IActiveProjectLocation {
-    name: string;
-    projectLocation: IProjectLocation;
-    distance: number;
-}
+// export interface IActiveProjectLocation {
+//     name: string;
+//     projectLocation: IProjectLocation;
+//     distance: number;
+// }
 
 @autoinject
 export class User {
@@ -30,17 +30,17 @@ export class User {
     private _breakCount: number = 4;
     private _apiToken: string;
     private _currentLocation: Position;
+    private _previousPomodoro: Date;
+    private _pomodoroCount: number = 0;
 
     private _locationThreshold: number = 1;
 
-    private _pomodoroCount: number = 0;
-
     private _projectLocations: IProjectLocation[] = [];
 
-    private _activeProject: IActiveProjectLocation | null;
+    private _activeProject: IProjectLocation | null;
     //private _projectReason: "location" | "override" | "none";
 
-    constructor(private container: Container, private storage: Storage, private geopositionTools: GeopositionTools) {
+    constructor(private container: Container, private storage: Storage) {
         this.init();
     }
 
@@ -53,10 +53,9 @@ export class User {
         //this._activeProject = (<any>settings).activeProject;
         console.log('Saved Settings', settings);
 
-        navigator.geolocation.getCurrentPosition((position) => {
-            this._currentLocation = position
-            this._activeProject = this.geopositionTools.getNearestProject(position);
-        });
+        const currentPosition = await GeopositionTools.getCurrentLocation();
+        this._currentLocation = currentPosition;
+        this._activeProject = GeopositionTools.getNearestProject(currentPosition, this);
     }
 
     addProjectLocation(name: string, projects: IProject[]) {
@@ -82,7 +81,7 @@ export class User {
 
     private stringifyProjectLocation() {
         const stringLocations = JSON.stringify(this._projectLocations.map((projectLocation) => {
-            return { name: projectLocation.name, projects: projectLocation.projects, projectLocation: this.geopositionTools.geopositionToObject(projectLocation.location) };
+            return { name: projectLocation.name, projects: projectLocation.projects, projectLocation: GeopositionTools.geopositionToObject(projectLocation.location) };
         }));
 
         return stringLocations;

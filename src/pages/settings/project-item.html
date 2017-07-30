@@ -1,0 +1,6 @@
+<template class="project-row">
+    <span>${projectLocation.name}</span>
+    <span if.bind="projectLocation.name === activeProject.name" class="active-project">Active</span>
+    <a class="project-edit-link" click.delegate="editProject(projectLocation)">Edit</a>
+    <a class="project-edit-link" click.delegate="deleteProject(projectLocation)">Delete</a>
+</template>

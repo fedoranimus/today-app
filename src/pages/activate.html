@@ -1,6 +1,11 @@
 <template>
-    <form if.bind="!hasKey" submit.delegate="registerApiKey()">
-        <input placeholder="Api Token" value.bind="keyInput">
-        <button type="submit">Submit</button>
-    </form>
+    <div class="activate">
+        <h2>Enter your Todoist API Token</h2>
+        <form class="pure-form" if.bind="!hasKey" submit.delegate="registerApiKey()">
+            <span>
+                <input placeholder="Api Token" value.bind="keyInput" required>
+                <button class="pure-button pure-button-primary" type="submit" disabled.bind="!isKeyValid">Submit</button>
+            </span>
+        </form>
+    </div>
 </template>

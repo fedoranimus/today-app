@@ -12,8 +12,10 @@
   "license": "ISC",
   "dependencies": {
     "aurelia-bootstrapper": "^2.1.1",
+    "aurelia-event-aggregator": "^1.0.1",
     "aurelia-fetch-client": "^1.1.2",
     "aurelia-framework": "^1.1.4",
+    "font-awesome": "^4.7.0",
     "moment": "^2.18.1",
     "todoist-js": "^0.3.1"
   },

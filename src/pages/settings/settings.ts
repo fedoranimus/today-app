@@ -2,6 +2,7 @@ import { autoinject, bindable } from 'aurelia-framework';
 import { User, IProjectLocation } from '../../services/user';
 import { TodoService } from '../../services/todoService';
 import { Project } from '../../infrastructure/todoist';
+import { GeopositionTools } from '../../services/geopositionTools';
 
 @autoinject
 export class Settings {
@@ -16,6 +17,8 @@ export class Settings {
     projects: Project[];
 
     activeProjectVal: number | string;
+
+    selectedProjectLocation: IProjectLocation;
 
     constructor(public user: User, private todoService: TodoService) {
         this.init();
@@ -38,6 +41,23 @@ export class Settings {
         this.fullName = userData.full_name;
     }
 
+    editProject(projectLocation: IProjectLocation) {
+        this.selectedProjectLocation = projectLocation;
+    }
+
+    async addProjectLocation() {
+        const names = this.projectLocations.map( pl => pl.name).filter(name => name.substring(0) === "New Project Group");
+        //TODO: Regex validation on a name that will not conflict!!!
+        
+        const currentPosition = await GeopositionTools.getCurrentLocation();
+
+        const newProject = { name: "New Project Group", projects: [], location: currentPosition };
+        this.projectLocations.push(newProject);
+
+        this.editProjectLocations = true;
+        this.selectedProjectLocation = newProject;
+    }
+
     // addProject() {
     //     if(this.selectedProject) {
     //         this.projectLocations = this.user.addProjectLocation(this.selectedProject.id, this.selectedProject.name);
@@ -53,22 +73,4 @@ export class Settings {
     get activeProject() {
         return this.user.activeProject;
     }
-
-    // setActiveProject() {
-    //     if(this.activeProjectVal === "location") {
-    //         this.user.setActiveProject("location");
-    //     } else {
-    //         this.user.setActiveProject(this.activeProjectVal);
-    //     }
-        
-    // }
-
-    // clearActiveProject() {
-    //     this.user.setActiveProject("none");
-    // }
-
-    toggleProjectLocationEdit() {
-        this.editProjectLocations = !this.editProjectLocations;
-    }
-
 }

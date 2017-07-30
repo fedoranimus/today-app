@@ -17,5 +17,6 @@
 }
 
 .task-item:hover .task-focus-button {
-    display: inline-block;
+    display: block;
+    align-self: center;
 }
