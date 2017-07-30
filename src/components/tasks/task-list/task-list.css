@@ -20,3 +20,7 @@
     display: block;
     align-self: center;
 }
+
+.task-list {
+    font-size: 1.15em;
+}

@@ -3,7 +3,7 @@ import { Container } from 'aurelia-dependency-injection';
 import TodoistAPI from 'todoist-js';
 import { Storage } from './storage';
 import * as moment from 'moment';
-import { Project } from '../infrastructure/todoist';
+import { Project, Item } from '../infrastructure/todoist';
 import { User, IProjectLocation, IProject } from './user';
 
 @autoinject
@@ -35,6 +35,20 @@ export class TodoService {
         });
 
         return items;
+    }
+
+    async getProjectTasks(projectId: number | null = null): Promise<Item[]> {
+        const sync = await this.todoist.sync();
+        let items = <Item[]>sync.items;
+        if(projectId) {
+            items = items.filter((item) => {
+                return item.project_id === projectId;
+            });
+        }
+
+        return items.sort((a, b) => {
+            return moment(b.due_date_utc).toDate().getDate() - moment(a.due_date_utc).toDate().getDate();
+        });
     }
 
     async getTasks(activeProjectLocation: IProjectLocation | null = null): Promise<any> {

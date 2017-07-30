@@ -3,6 +3,7 @@ import { Container } from 'aurelia-dependency-injection';
 import { autoinject, Aurelia } from 'aurelia-framework';
 import { Storage } from './storage';
 import { GeopositionTools } from './geopositionTools';
+import { Project } from '../infrastructure/todoist';
 
 export interface IProjectLocation {
     name: string;
@@ -37,7 +38,7 @@ export class User {
 
     private _projectLocations: IProjectLocation[] = [];
 
-    private _activeProject: IProjectLocation | null;
+    private _activeProject: Project | null = null;
     //private _projectReason: "location" | "override" | "none";
 
     constructor(private container: Container, private storage: Storage) {
@@ -49,13 +50,16 @@ export class User {
         if(Object.keys(settings).length > 0) {
             if((<any>settings).projectLocations)
                 this._projectLocations = JSON.parse((<any>settings).projectLocations);
+
+            if((<any>settings).activeProject)
+                this._activeProject = (<any>settings).activeProject;
         }
-        //this._activeProject = (<any>settings).activeProject;
+        
         console.log('Saved Settings', settings);
 
         const currentPosition = await GeopositionTools.getCurrentLocation();
         this._currentLocation = currentPosition;
-        this._activeProject = GeopositionTools.getNearestProject(currentPosition, this);
+        //this._activeProject = GeopositionTools.getNearestProject(currentPosition, this);
     }
 
     addProjectLocation(name: string, projects: IProject[]) {

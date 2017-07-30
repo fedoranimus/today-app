@@ -1,6 +1,13 @@
 export default interface Todoist {
     //TODO
+    items: Item[];
     projects: Project[];
+}
+
+export interface Item {
+    content: string;
+    due_date_utc: string;
+    project_id: number;
 }
 
 export interface Project {
