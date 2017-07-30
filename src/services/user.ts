@@ -45,7 +45,10 @@ export class User {
 
     private async init() {
         const settings = await this.storage.get(null);
-        this._projectLocations = JSON.parse((<any>settings).projectLocations);
+        if(Object.keys(settings).length > 0) {
+            if((<any>settings).projectLocations)
+                this._projectLocations = JSON.parse((<any>settings).projectLocations);
+        }
         //this._activeProject = (<any>settings).activeProject;
         console.log('Saved Settings', settings);
 
