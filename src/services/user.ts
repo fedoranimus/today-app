@@ -2,6 +2,7 @@ import TodoistAPI from 'todoist-js';
 import { Container } from 'aurelia-dependency-injection';
 import { autoinject, Aurelia } from 'aurelia-framework';
 import { Storage } from './storage';
+import { GeopositionTools } from './geopositionTools';
 
 export interface IProjectLocation {
     name: string;
@@ -39,7 +40,7 @@ export class User {
     private _activeProject: IActiveProjectLocation | null;
     //private _projectReason: "location" | "override" | "none";
 
-    constructor(private container: Container, private storage: Storage) {
+    constructor(private container: Container, private storage: Storage, private geopositionTools: GeopositionTools) {
         this.init();
     }
 
@@ -52,13 +53,9 @@ export class User {
         //this._activeProject = (<any>settings).activeProject;
         console.log('Saved Settings', settings);
 
-        // if(this._projectReason == "location") {
-        //     this.setActiveProject("location"); //ensure this initialized
-        // }
-
         navigator.geolocation.getCurrentPosition((position) => {
             this._currentLocation = position
-            this._activeProject = this.getNearestProject(position);
+            this._activeProject = this.geopositionTools.getNearestProject(position);
         });
     }
 
@@ -85,7 +82,7 @@ export class User {
 
     private stringifyProjectLocation() {
         const stringLocations = JSON.stringify(this._projectLocations.map((projectLocation) => {
-            return { name: projectLocation.name, projects: projectLocation.projects, projectLocation: this.geopositionToObject(projectLocation.location) };
+            return { name: projectLocation.name, projects: projectLocation.projects, projectLocation: this.geopositionTools.geopositionToObject(projectLocation.location) };
         }));
 
         return stringLocations;
@@ -172,6 +169,10 @@ export class User {
         this.storage.set({ breakCount: count });
     }
 
+    get locationThreshold() {
+        return this._locationThreshold;
+    }
+
     get apiToken() {
         return this._apiToken;
     }
@@ -183,55 +184,5 @@ export class User {
         this.container.registerInstance(TodoistAPI, new TodoistAPI(this._apiToken));
     }
 
-    private getNearestProject(currentLocation: Position): IActiveProjectLocation | null {
-        let projectLocations: IActiveProjectLocation[] = [];
-        this._projectLocations.forEach((project) => {
-            const distance = this.calculateHaversineDistance(currentLocation, project.location);
-            if(distance < this._locationThreshold) {
-                projectLocations.push({ name: project.name, projectLocation: project, distance: distance });
-            }
-        });
-
-        if(projectLocations.length > 0) {
-            projectLocations.sort((a, b) => {
-                return a.distance - b.distance;
-            });
-            return projectLocations[0];
-        } else {
-            return null;
-        }
-    }
-
-    private toRad(x: number) {
-        return x * Math.PI / 180;
-    }
-
-    private calculateHaversineDistance(currentLocation: Position, savedLocation: Position) {
-        const R = 6371;
-        const dLat = this.toRad(savedLocation.coords.latitude - currentLocation.coords.latitude);
-        const dLong = this.toRad(savedLocation.coords.longitude - currentLocation.coords.longitude);
-
-        const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                    Math.cos(this.toRad(currentLocation.coords.latitude)) * Math.cos(this.toRad(savedLocation.coords.latitude)) * Math.sin(dLong/2) * Math.sin(dLong/2);
-
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        const d = R * c;
-
-        return Math.round(d);
-    }
-
-    private geopositionToObject(geoposition: Position) {
-        return {
-            timestamp: geoposition.timestamp,
-            coords: {
-                accuracy: geoposition.coords.accuracy,
-                altitude: geoposition.coords.altitude,
-                altitudeAccuracy: geoposition.coords.altitudeAccuracy,
-                heading: geoposition.coords.heading,
-                latitude: geoposition.coords.latitude,
-                longitude: geoposition.coords.longitude,
-                speed: geoposition.coords.speed
-            }
-        }
-    }
+    
 }
