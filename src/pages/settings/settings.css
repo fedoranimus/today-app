@@ -1,0 +1,11 @@
+.project-edit-link {
+    display: none;
+}
+
+.project-location:hover .project-edit-link {
+    display: inline-block;
+}
+
+.project-row:hover .project-edit-link {
+    display: inline-block;
+}

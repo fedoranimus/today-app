@@ -1,7 +1,7 @@
 import { autoinject, Aurelia } from 'aurelia-framework';
 import { Storage } from '../services/storage';
 import { TodoService } from '../services/todoService';
-import { User } from '../services/user';
+import { User, IActiveProjectLocation } from '../services/user';
 
 @autoinject
 export class Home {
@@ -10,7 +10,7 @@ export class Home {
     tasks: any[];
     karma: any;
     isPremium: boolean = false;
-    activeProject: { projectId: number, projectName: string, distance: number } | null = null;
+    activeProject: IActiveProjectLocation | null = null;
 
     constructor(private aurelia: Aurelia, private todoService: TodoService, private user: User) {
         this.init();
@@ -23,7 +23,7 @@ export class Home {
         const sync = await this.todoService.sync();
         this.activeProject = this.user.activeProject;
         if(this.activeProject)
-            this.tasks = await this.todoService.getTasks(this.activeProject.projectId);
+            this.tasks = await this.todoService.getTasks(this.activeProject);
         else 
             this.tasks = await this.todoService.getTasks();
 

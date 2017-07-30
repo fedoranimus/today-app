@@ -4,9 +4,20 @@ import { autoinject, Aurelia } from 'aurelia-framework';
 import { Storage } from './storage';
 
 export interface IProjectLocation {
+    name: string;
+    projects: IProject[]
+    location: Position;
+}
+
+export interface IProject {
     projectId: number;
     projectName: string;
-    projectLocation: Position;
+}
+
+export interface IActiveProjectLocation {
+    name: string;
+    projectLocation: IProjectLocation;
+    distance: number;
 }
 
 @autoinject
@@ -25,7 +36,7 @@ export class User {
 
     private _projectLocations: IProjectLocation[] = [];
 
-    private _activeProject: { projectId: number, projectName: string, distance: number } | null;
+    private _activeProject: IActiveProjectLocation | null;
     //private _projectReason: "location" | "override" | "none";
 
     constructor(private container: Container, private storage: Storage) {
@@ -35,7 +46,7 @@ export class User {
     private async init() {
         const settings = await this.storage.get(null);
         this._projectLocations = JSON.parse((<any>settings).projectLocations);
-        this._activeProject = (<any>settings).activeProject;
+        //this._activeProject = (<any>settings).activeProject;
         console.log('Saved Settings', settings);
 
         // if(this._projectReason == "location") {
@@ -48,37 +59,44 @@ export class User {
         });
     }
 
-    addProjectLocation(projectId: number, projectName: string) {
-        console.log(projectId, projectName, this._currentLocation, this._projectLocations);
-        if(!this._projectLocations.some((element) => {
-            return element.projectId === projectId || this.getNearestProject(this._currentLocation) !== null; 
-        })) {
-            console.debug("pushing project");
-            this._projectLocations.push({ projectId: projectId, projectName: projectName, projectLocation: this._currentLocation });
-        }
-        let stringLocations = JSON.stringify(this._projectLocations.map((projectLocation) => {
-            return { projectId: projectLocation.projectId, projectName: projectLocation.projectName, projectLocation: this.geopositionToObject(projectLocation.projectLocation) };
-        }));
-        console.log(this._projectLocations, stringLocations);
+    addProjectLocation(name: string, projects: IProject[]) {
+        console.log(name, projects, this._currentLocation, this._projectLocations);
 
+        //TODO
+        const stringLocations = this.stringifyProjectLocation();
         this.storage.set({ projectLocations: stringLocations });
 
         return this._projectLocations;
     }
 
-    removeProjectLocation(projectId: number) {
-        this._projectLocations = this._projectLocations.filter(obj => { 
-            return obj.projectId !== projectId;
+    removeProjectLocation(name: string) {
+        this._projectLocations = this._projectLocations.filter(obj => {
+            return obj.name !== name;
         });
 
-        let stringLocations = JSON.stringify(this._projectLocations.map((projectLocation) => {
-            return { projectId: projectLocation.projectId, projectName: projectLocation.projectName, projectLocation: this.geopositionToObject(projectLocation.projectLocation) };
-        }));
-
+        const stringLocations = this.stringifyProjectLocation();
         this.storage.set({ projectLocations: stringLocations });
 
         return this._projectLocations;
     }
+
+    private stringifyProjectLocation() {
+        const stringLocations = JSON.stringify(this._projectLocations.map((projectLocation) => {
+            return { name: projectLocation.name, projects: projectLocation.projects, projectLocation: this.geopositionToObject(projectLocation.location) };
+        }));
+
+        return stringLocations;
+    }
+
+    // addProjectLocation(name: string, projectId: number, projectName: string) {
+    //     console.log(projectId, projectName, this._currentLocation, this._projectLocations);
+    //     if(!this._projectLocations.some((element) => {
+    //         return element.projectId === projectId || this.getNearestProject(this._currentLocation) !== null; 
+    //     })) {
+    //         console.debug("pushing project");
+    //         this._projectLocations.push({ projectId: projectId, projectName: projectName, projectLocation: this._currentLocation });
+    //     }
+    // }
 
     // setActiveProject(projectId: number | null = null) {
     //     navigator.geolocation.getCurrentPosition( (location) => {
@@ -162,20 +180,20 @@ export class User {
         this.container.registerInstance(TodoistAPI, new TodoistAPI(this._apiToken));
     }
 
-    private getNearestProject(currentLocation: Position): { projectId: number, projectName: string, distance: number } | null {
-        let projects: any[] = [];
+    private getNearestProject(currentLocation: Position): IActiveProjectLocation | null {
+        let projectLocations: IActiveProjectLocation[] = [];
         this._projectLocations.forEach((project) => {
-            const distance = this.calculateHaversineDistance(currentLocation, project.projectLocation);
+            const distance = this.calculateHaversineDistance(currentLocation, project.location);
             if(distance < this._locationThreshold) {
-                projects.push({ projectId: project.projectId, projectName: project.projectName, distance: distance });
+                projectLocations.push({ name: project.name, projectLocation: project, distance: distance });
             }
         });
 
-        if(projects.length > 0) {
-            projects.sort((a, b) => {
+        if(projectLocations.length > 0) {
+            projectLocations.sort((a, b) => {
                 return a.distance - b.distance;
             });
-            return projects[0];
+            return projectLocations[0];
         } else {
             return null;
         }

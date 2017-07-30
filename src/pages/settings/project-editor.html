@@ -1,0 +1,23 @@
+<template>
+    <require from='./project-editor'></require>
+    <form submit.trigger="saveProjectLocation()">
+        <fieldset>
+            <legend>Project Location</legend>
+        </fieldset>
+        <input placeholder="Name" value.bind="name">
+
+        <h3>Projects</h3>
+        <hr>
+        <div class="project-selector">
+            <div class="project-row">
+                <span repeat.for="project of projects">${project.name}</span>
+                <span class="project-edit-link">remove</span>
+            </div>
+            <select value.bind="selectedProject">
+                <option repeat.for="availableProject of availableProjects" model.bind="availableProject">${availableProject.name}</option>
+            </select>
+            <button type="submit">Add Project</button>
+        </div>
+        <button type="submit">Save</button>
+    </form>
+</template>

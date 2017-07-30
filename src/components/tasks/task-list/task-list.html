@@ -2,6 +2,7 @@
     <require from="./task-list.css"></require>
         <div id="${task.id}" class="task-item" repeat.for="task of tasks" model.bind="task">
             <span class="task-content">${task.content}</span>
+            <span class="task-due-date">${task.due_date_utc}</span>
             <span class="task-focus-button">Focus</span>
         </div>
 </template>

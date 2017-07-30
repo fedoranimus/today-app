@@ -1,7 +1,0 @@
-.delete-project-location {
-    display: none;
-}
-
-.project-location:hover .delete-project-location {
-    display: inline-block;
-}

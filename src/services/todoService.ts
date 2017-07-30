@@ -4,12 +4,13 @@ import TodoistAPI from 'todoist-js';
 import { Storage } from './storage';
 import * as moment from 'moment';
 import { Project } from '../infrastructure/todoist';
+import { User, IActiveProjectLocation, IProjectLocation, IProject } from './user';
 
 @autoinject
 export class TodoService {
     private todoist: any;
     
-    constructor(private container: Container, private storage: Storage) {
+    constructor(private container: Container, private storage: Storage, private user: User) {
         this.todoist = this.container.get(TodoistAPI);
         console.log(this.todoist);
     }
@@ -36,12 +37,12 @@ export class TodoService {
         return items;
     }
 
-    async getTasks(activeProjectId: number|null = null): Promise<any> {
+    async getTasks(activeProjectLocation: IActiveProjectLocation | null = null): Promise<any> {
         const sync = await this.todoist.sync();
-        console.log(activeProjectId);
-        if(activeProjectId) {
+        console.log(activeProjectLocation);
+        if(activeProjectLocation) {
             return sync.items.filter((item: any) => {
-                return item.project_id === activeProjectId;
+                return item.project_id === activeProjectLocation.projectLocation.projects.find(y => y.projectId == item.project_id);
             });
         } else {
             return sync.items;

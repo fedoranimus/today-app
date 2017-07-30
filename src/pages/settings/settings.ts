@@ -1,7 +1,7 @@
 import { autoinject, bindable } from 'aurelia-framework';
-import { User, IProjectLocation } from '../services/user';
-import { TodoService } from '../services/todoService';
-import { Project } from '../infrastructure/todoist';
+import { User, IProjectLocation } from '../../services/user';
+import { TodoService } from '../../services/todoService';
+import { Project } from '../../infrastructure/todoist';
 
 @autoinject
 export class Settings {
@@ -38,17 +38,17 @@ export class Settings {
         this.fullName = userData.full_name;
     }
 
-    addProject() {
-        if(this.selectedProject) {
-            this.projectLocations = this.user.addProjectLocation(this.selectedProject.id, this.selectedProject.name);
-        }
-    }
+    // addProject() {
+    //     if(this.selectedProject) {
+    //         this.projectLocations = this.user.addProjectLocation(this.selectedProject.id, this.selectedProject.name);
+    //     }
+    // }
 
-    deleteProject(id: number) {
-        if(id) {
-            this.projectLocations = this.user.removeProjectLocation(id);
-        }
-    }
+    // deleteProject(id: number) {
+    //     if(id) {
+    //         this.projectLocations = this.user.removeProjectLocation(id);
+    //     }
+    // }
 
     get activeProject() {
         return this.user.activeProject;
