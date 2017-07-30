@@ -4,11 +4,11 @@
   <require from="./home.css"></require>
   <div class="container">
     <span class="header">Today
-      <span if.bind="hasActiveProject"> ${activeProject}</span>
+      <span if.bind="hasActiveProject"> - ${activeProject.projectName}</span>
       <a if.bind="!hasActiveProject" class="add-project-location" route-href="route: settings">Set Location</a>
     </span>
 
-    <task-list></task-list>
+    <task-list tasks.bind="tasks"></task-list>
   </div>
   <a class="settings-link" route-href="route: settings">Settings</a>
 </template>

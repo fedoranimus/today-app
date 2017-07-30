@@ -10,6 +10,7 @@ export class Home {
     tasks: any[];
     karma: any;
     isPremium: boolean = false;
+    activeProject: { projectId: number, projectName: string, distance: number } | null = null;
 
     constructor(private aurelia: Aurelia, private todoService: TodoService, private user: User) {
         this.init();
@@ -20,14 +21,18 @@ export class Home {
         this.karma = stats.karma;
         console.log(await this.todoService.sync());
         const sync = await this.todoService.sync();
+        this.activeProject = this.user.activeProject;
+        if(this.activeProject)
+            this.tasks = await this.todoService.getTasks(this.activeProject.projectId);
+        else 
+            this.tasks = await this.todoService.getTasks();
+
+        console.log(this.tasks);
+        
         this.isPremium = sync.isPremium;        
     }
 
     get hasActiveProject(): boolean {
-        return false;
-    }
-
-    addProjectLocation() {
-        //this.user.addProjectLocation();
+        return this.activeProject !== null;
     }
 }

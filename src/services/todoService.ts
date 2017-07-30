@@ -36,9 +36,16 @@ export class TodoService {
         return items;
     }
 
-    async getTasks(): Promise<any> {
+    async getTasks(activeProjectId: number|null = null): Promise<any> {
         const sync = await this.todoist.sync();
-        return sync.items;
+        console.log(activeProjectId);
+        if(activeProjectId) {
+            return sync.items.filter((item: any) => {
+                return item.project_id === activeProjectId;
+            });
+        } else {
+            return sync.items;
+        }
     }
 
     async getProjects(): Promise<Project[]> {

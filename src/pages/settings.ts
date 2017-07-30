@@ -15,6 +15,8 @@ export class Settings {
 
     projects: Project[];
 
+    activeProjectVal: number | string;
+
     constructor(public user: User, private todoService: TodoService) {
         this.init();
     }
@@ -38,16 +40,32 @@ export class Settings {
 
     addProject() {
         if(this.selectedProject) {
-            this.user.addProjectLocation(this.selectedProject.id, this.selectedProject.name);
-            this.projectLocations = this.user.projectLocations;
+            this.projectLocations = this.user.addProjectLocation(this.selectedProject.id, this.selectedProject.name);
         }
     }
 
     deleteProject(id: number) {
         if(id) {
-            this.user.removeProjectLocation(id);
+            this.projectLocations = this.user.removeProjectLocation(id);
         }
     }
+
+    get activeProject() {
+        return this.user.activeProject;
+    }
+
+    // setActiveProject() {
+    //     if(this.activeProjectVal === "location") {
+    //         this.user.setActiveProject("location");
+    //     } else {
+    //         this.user.setActiveProject(this.activeProjectVal);
+    //     }
+        
+    // }
+
+    // clearActiveProject() {
+    //     this.user.setActiveProject("none");
+    // }
 
     toggleProjectLocationEdit() {
         this.editProjectLocations = !this.editProjectLocations;

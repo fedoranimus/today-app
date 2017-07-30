@@ -25,8 +25,8 @@ export class User {
 
     private _projectLocations: IProjectLocation[] = [];
 
-    private _overrideProject: number;
-
+    private _activeProject: { projectId: number, projectName: string, distance: number } | null;
+    //private _projectReason: "location" | "override" | "none";
 
     constructor(private container: Container, private storage: Storage) {
         this.init();
@@ -34,11 +34,17 @@ export class User {
 
     private async init() {
         const settings = await this.storage.get(null);
-        this._projectLocations = (<any>settings).projectLocations;
+        this._projectLocations = JSON.parse((<any>settings).projectLocations);
+        this._activeProject = (<any>settings).activeProject;
         console.log('Saved Settings', settings);
+
+        // if(this._projectReason == "location") {
+        //     this.setActiveProject("location"); //ensure this initialized
+        // }
 
         navigator.geolocation.getCurrentPosition((position) => {
             this._currentLocation = position
+            this._activeProject = this.getNearestProject(position);
         });
     }
 
@@ -50,9 +56,14 @@ export class User {
             console.debug("pushing project");
             this._projectLocations.push({ projectId: projectId, projectName: projectName, projectLocation: this._currentLocation });
         }
+        let stringLocations = JSON.stringify(this._projectLocations.map((projectLocation) => {
+            return { projectId: projectLocation.projectId, projectName: projectLocation.projectName, projectLocation: this.geopositionToObject(projectLocation.projectLocation) };
+        }));
+        console.log(this._projectLocations, stringLocations);
 
-        this.storage.set({ projectLocations: this._projectLocations });
+        this.storage.set({ projectLocations: stringLocations });
 
+        return this._projectLocations;
     }
 
     removeProjectLocation(projectId: number) {
@@ -60,17 +71,30 @@ export class User {
             return obj.projectId !== projectId;
         });
 
-        this.storage.set({ projectLocations: this._projectLocations });
+        let stringLocations = JSON.stringify(this._projectLocations.map((projectLocation) => {
+            return { projectId: projectLocation.projectId, projectName: projectLocation.projectName, projectLocation: this.geopositionToObject(projectLocation.projectLocation) };
+        }));
+
+        this.storage.set({ projectLocations: stringLocations });
+
+        return this._projectLocations;
     }
+
+    // setActiveProject(projectId: number | null = null) {
+    //     navigator.geolocation.getCurrentPosition( (location) => {
+    //         this._activeProject = this.getNearestProject(location);
+    //     });
+
+    //     //this.storage.set({ projectReason: reason });
+    //     this.storage.set({ activeProject: this._activeProject });
+    // }
 
     get projectLocations() {
         return this._projectLocations;
     }
 
-    get currentProject() {
-        return navigator.geolocation.getCurrentPosition( (location) => {
-            this.getNearestProject(location);
-        });
+    get activeProject() {
+        return this._activeProject;
     }
 
     get pomodoroCount() {
@@ -138,12 +162,12 @@ export class User {
         this.container.registerInstance(TodoistAPI, new TodoistAPI(this._apiToken));
     }
 
-    private getNearestProject(currentLocation: Position): number | null {
+    private getNearestProject(currentLocation: Position): { projectId: number, projectName: string, distance: number } | null {
         let projects: any[] = [];
         this._projectLocations.forEach((project) => {
             const distance = this.calculateHaversineDistance(currentLocation, project.projectLocation);
             if(distance < this._locationThreshold) {
-                projects.push({ projectId: project.projectId, distance: distance });
+                projects.push({ projectId: project.projectId, projectName: project.projectName, distance: distance });
             }
         });
 
@@ -173,5 +197,20 @@ export class User {
         const d = R * c;
 
         return Math.round(d);
+    }
+
+    private geopositionToObject(geoposition: Position) {
+        return {
+            timestamp: geoposition.timestamp,
+            coords: {
+                accuracy: geoposition.coords.accuracy,
+                altitude: geoposition.coords.altitude,
+                altitudeAccuracy: geoposition.coords.altitudeAccuracy,
+                heading: geoposition.coords.heading,
+                latitude: geoposition.coords.latitude,
+                longitude: geoposition.coords.longitude,
+                speed: geoposition.coords.speed
+            }
+        }
     }
 }

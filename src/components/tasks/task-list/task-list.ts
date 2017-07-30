@@ -1,15 +1,11 @@
-import { autoinject } from 'aurelia-framework';
+import { autoinject, bindable } from 'aurelia-framework';
 import { TodoService } from '../../../services/todoService';
 
 @autoinject
 export class TaskList {
-    tasks: any[];
+    @bindable tasks: any[];
 
-    constructor(private todoService: TodoService) {
-        this.init();
-    }
+    constructor() {
 
-    private async init() {
-        this.tasks = await this.todoService.getTasks();
     }
 }

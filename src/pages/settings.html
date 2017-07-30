@@ -1,9 +1,14 @@
 <template class="settings">
+    <require from="./settings.css"></require>
     <div class="container">
         <h1>Welcome, ${fullName}</h1>
 
         <h2>Project Locations</h2>
-        <div repeat.for="projectLocation of projectLocations">${projectLocation.projectName}</div>
+        <div class="project-location" repeat.for="projectLocation of projectLocations">
+            <span>${projectLocation.projectName}</span>
+            <span if.bind="projectLocation.projectId == activeProject" class="active-project">Active</span>
+            <a class="delete-project-location" click.delegate="deleteProject(projectLocation.projectId)">Delete</a>
+        </div>
 
         <span if.bind="!editProjectLocations">
             <a click.delegate="toggleProjectLocationEdit()">edit</a>
