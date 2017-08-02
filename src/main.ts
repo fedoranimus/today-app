@@ -7,8 +7,8 @@ export function configure(aurelia: Aurelia): void {
     aurelia.use
         .standardConfiguration()
         .developmentLogging()
-        .feature(PLATFORM.moduleName('components'))
-        .feature(PLATFORM.moduleName('value-converters'));
+        .feature(PLATFORM.moduleName('components/index'))
+        .feature(PLATFORM.moduleName('value-converters/index'));
 
     const storage = <Storage>aurelia.container.get(Storage);
 
