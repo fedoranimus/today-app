@@ -1,6 +1,5 @@
 <template class="task-list">
     <require from="./task-list.css"></require>
-    <require from="../../../value-converters/due-date-value-converter"></require>
         <div class="task-item pure-g" repeat.for="task of tasks" model.bind="task">
             <div class="pure-u-4-5">
                 <div class="task-content">${task.content}</div>

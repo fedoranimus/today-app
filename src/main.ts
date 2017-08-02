@@ -6,7 +6,9 @@ import TodoistAPI from 'todoist-js';
 export function configure(aurelia: Aurelia): void {    
     aurelia.use
         .standardConfiguration()
-        .developmentLogging();
+        .developmentLogging()
+        .feature(PLATFORM.moduleName('components'))
+        .feature(PLATFORM.moduleName('value-converters'));
 
     const storage = <Storage>aurelia.container.get(Storage);
 
