@@ -1,13 +1,4 @@
-.header {
-    font-size: 2em;
-    width: 100%;
-}
-
-.add-project-location {
-    font-size: 1em;
-    display: none;
-}
-
-.header:hover .add-project-location {
-    display: inline-block;
+.greeting {
+    font-size: 2.250rem;
+    padding: 2rem 0 1rem 0;
 }

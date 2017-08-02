@@ -1,11 +1,11 @@
 <template class="task-list">
     <require from="./task-list.css"></require>
-        <div class="task-item pure-g" repeat.for="task of tasks" model.bind="task">
-            <div class="pure-u-4-5">
+        <div class="task-item row" repeat.for="task of tasks" model.bind="task">
+            <div class="ten columns">
                 <div class="task-content">${task.content}</div>
                 <div class="task-due-date">${task.due_date_utc | dueDate: 'dddd, hA'}</div>
             </div>
-            <div class="pure-u-1-5 center-align-child">
+            <div class="two columns center-align-child">
                 <a class="task-focus-button">Focus</a>
             </div>
         </div>

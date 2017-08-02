@@ -21,42 +21,46 @@ export class Settings {
     selectedProjectLocation: IProjectLocation;
 
     constructor(public user: User, private todoService: TodoService) {
-        this.init();
-    }
-
-    private async init() {
-        await this.getUser();
-        await this.getProjects();
-        console.log(this.user.projectLocations);
-        this.projectLocations = this.user.projectLocations;
-    }
-
-    async getProjects() {
-        this.projects = await this.todoService.getProjects();
-        console.log(this.projects);
-    }
-
-    async getUser() {
-        const userData = await this.todoService.getUser();
-        this.fullName = userData.full_name;
-    }
-
-    editProject(projectLocation: IProjectLocation) {
-        this.selectedProjectLocation = projectLocation;
-    }
-
-    async addProjectLocation() {
-        const names = this.projectLocations.map( pl => pl.name).filter(name => name.substring(0) === "New Project Group");
-        //TODO: Regex validation on a name that will not conflict!!!
         
-        const currentPosition = await GeopositionTools.getCurrentLocation();
-
-        const newProject = { name: "New Project Group", projects: [], location: currentPosition };
-        this.projectLocations.push(newProject);
-
-        this.editProjectLocations = true;
-        this.selectedProjectLocation = newProject;
     }
+
+    bind() {
+
+    }
+
+    // private async init() {
+    //     await this.getUser();
+    //     await this.getProjects();
+    //     console.log(this.user.projectLocations);
+    //     this.projectLocations = this.user.projectLocations;
+    // }
+
+    // async getProjects() {
+    //     this.projects = await this.todoService.getProjects();
+    //     console.log(this.projects);
+    // }
+
+    // async getUser() {
+    //     const userData = await this.todoService.getUser();
+    //     this.fullName = userData.full_name;
+    // }
+
+    // editProject(projectLocation: IProjectLocation) {
+    //     this.selectedProjectLocation = projectLocation;
+    // }
+
+    // async addProjectLocation() {
+    //     const names = this.projectLocations.map( pl => pl.name).filter(name => name.substring(0) === "New Project Group");
+    //     //TODO: Regex validation on a name that will not conflict!!!
+        
+    //     const currentPosition = await GeopositionTools.getCurrentLocation();
+
+    //     const newProject = { name: "New Project Group", projects: [], location: currentPosition };
+    //     this.projectLocations.push(newProject);
+
+    //     this.editProjectLocations = true;
+    //     this.selectedProjectLocation = newProject;
+    // }
 
     // addProject() {
     //     if(this.selectedProject) {
@@ -71,6 +75,6 @@ export class Settings {
     // }
 
     get activeProject() {
-        return this.user.activeProject;
+        return undefined;
     }
 }

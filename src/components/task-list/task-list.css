@@ -1,6 +1,11 @@
+.task-item:first-child {
+    font-size: 1.5rem;
+}
+
 .task-item {
-    border-bottom: thin sold gray;
+    border-bottom: thin solid gray;
     padding: .5em 0;
+    font-size: 1.125rem;
 }
 
 .task-item:hover {

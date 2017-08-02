@@ -1,20 +1,15 @@
 <template>
   <require from="./home.css"></require>
   <div class="container">
-    <span class="header pure-g">
-      <span class="pure-u-1-2">
-        Today
-      </span>
-      <span class="pure-u-1-2">
-        <select value.bind="activeProject">
-            <option repeat.for="project of projects" model.bind="project">${project.name}</option>
-        </select>
-      </span>
-      <!-- <span if.bind="hasActiveProject"> - ${activeProject.name}</span>
-      <a if.bind="!hasActiveProject" class="add-project-location" route-href="route: settings">Set Location</a> -->
-    </span>
-
-    <task-list tasks.bind="tasks"></task-list>
+      <div class="greeting">${firstName | greeting}</div>
+      <div class="row">
+        <div class="eight columns">
+          <task-list tasks.bind="tasks"></task-list>
+        </div>
+        <div class="four columns">
+          Filter Content
+        </div>
+      </div>
   </div>
   <a class="settings-link" route-href="route: settings">Settings</a>
 </template>

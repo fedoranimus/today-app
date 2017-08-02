@@ -3,7 +3,7 @@ import { Container } from 'aurelia-dependency-injection';
 import { autoinject, Aurelia } from 'aurelia-framework';
 import { Storage } from './storage';
 import { GeopositionTools } from './geopositionTools';
-import { Project } from '../infrastructure/todoist';
+import { Filter } from '../infrastructure/todoist';
 
 export interface IProjectLocation {
     name: string;
@@ -38,7 +38,8 @@ export class User {
 
     private _projectLocations: IProjectLocation[] = [];
 
-    private _activeProject: Project | null = null;
+    //private _activeProject: Project | null = null;
+    private _activeFilter: Filter | null = null;
     //private _projectReason: "location" | "override" | "none";
 
     constructor(private container: Container, private storage: Storage) {
@@ -51,8 +52,8 @@ export class User {
             if((<any>settings).projectLocations)
                 this._projectLocations = JSON.parse((<any>settings).projectLocations);
 
-            if((<any>settings).activeProject)
-                this._activeProject = (<any>settings).activeProject;
+            if((<any>settings).activeFilter)
+                this._activeFilter = JSON.parse((<any>settings).activeFilter);
         }
         
         console.log('Saved Settings', settings);
@@ -60,6 +61,16 @@ export class User {
         const currentPosition = await GeopositionTools.getCurrentLocation();
         this._currentLocation = currentPosition;
         //this._activeProject = GeopositionTools.getNearestProject(currentPosition, this);
+    }
+
+    set activeFilter(filter: Filter | null) {
+        this._activeFilter = filter;
+
+        this.storage.set({ activeFilter: JSON.stringify(filter)});
+    }
+
+    get activeFilter() {
+        return this._activeFilter;
     }
 
     addProjectLocation(name: string, projects: IProject[]) {
@@ -114,9 +125,9 @@ export class User {
         return this._projectLocations;
     }
 
-    get activeProject() {
-        return this._activeProject;
-    }
+    // get activeProject() {
+    //     return this._activeProject;
+    // }
 
     get pomodoroCount() {
         return this._pomodoroCount;

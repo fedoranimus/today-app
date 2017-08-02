@@ -1,7 +1,8 @@
-export default interface Todoist {
+export interface Sync {
     //TODO
     items: Item[];
     projects: Project[];
+    filters: Filter[];
 }
 
 export interface Item {
@@ -23,4 +24,13 @@ export interface Project {
     name: string;
     parent_id: number | null;
     shared: boolean;
+}
+
+export interface Filter {
+    color: number;
+    id: number;
+    is_deleted: number;
+    item_order: number;
+    name: string;
+    query: string;
 }
