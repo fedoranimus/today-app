@@ -5,7 +5,13 @@ export class SessionCompletedEvent {
 }
 
 export class SessionStartedEvent {
-    constructor() {
+    constructor(public isPomodoro: boolean, public length: number) {
         
+    }
+}
+
+export class StartSessionEvent {
+    constructor(public length: number) {
+
     }
 }

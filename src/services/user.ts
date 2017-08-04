@@ -25,9 +25,9 @@ export interface IProject {
 @autoinject
 export class User {
     private _pomodoroGoal: number = 8;
-    private _focusLength: number = 25;
-    private _breakLength: number = 5;
-    private _longBreakLength: number = 15;
+    private _focusLength: number = 1500000; //25 minutes
+    private _breakLength: number = 300000; // 5 minutes
+    private _longBreakLength: number = 900000; // 15 minutes
     private _breakCount: number = 4;
     private _apiToken: string;
     private _currentLocation: Position;

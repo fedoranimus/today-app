@@ -3,12 +3,14 @@ import { Storage } from '../services/storage';
 import { TodoService } from '../services/todoService';
 import { User, IProjectLocation } from '../services/user';
 import { Filter, Item } from '../infrastructure/todoist';
+import { EventAggregator } from 'aurelia-event-aggregator';
+import { SessionStartedEvent, SessionCompletedEvent } from '../infrastructure/events';
 
 @autoinject
 export class Home {
     keyInput: string;
     
-    tasks: Item[];
+    tasks: Item[] = [];
     karma: any;
     isPremium: boolean = false;
     //@bindable activeProject: Project | null = null;
@@ -16,8 +18,11 @@ export class Home {
     //projects: Project[];
     @bindable firstName: string = "user";
 
-    constructor(private aurelia: Aurelia, private todoService: TodoService, private user: User) {
-        //this.init();
+    focusLength: number;
+    isSessionRunning: boolean = false;
+
+    constructor(private aurelia: Aurelia, private todoService: TodoService, private user: User, private eventAggregator: EventAggregator) {
+
     }
 
     async bind() {
@@ -26,31 +31,16 @@ export class Home {
 
         this.tasks = await this.todoService.getTasks();
 
+        this.focusLength = this.user.focusLength;
+
         console.log(await this.todoService.getSync());
+
+        this.eventAggregator.subscribe(SessionStartedEvent, (event: SessionStartedEvent) => {
+            this.isSessionRunning = true;
+        });
+
+        this.eventAggregator.subscribe(SessionCompletedEvent, (event: SessionCompletedEvent) => {
+            this.isSessionRunning = false;
+        });
     }
-
-
-    private async init() {
-        
-        //this.firstName = user.full_name.split(" ")[0];
-        //console.log(this.firstName);
-        //this.projects = await this.todoService.getProjects();
-        //this.activeProject = this.user.activeProject;
-        //console.log(`Active Project: ${this.activeProject}`);
-        // if(this.activeProject)
-        //     this.tasks = await this.todoService.getProjectTasks(this.activeProject.id);
-        // else 
-        //     this.tasks = await this.todoService.getProjectTasks();
-
-        //console.log(this.tasks);     
-    }
-
-    // async activeProjectChanged() {
-    //     if(this.activeProject)
-    //         this.tasks = await this.todoService.getProjectTasks(this.activeProject.id);
-    // }
-
-    // get hasActiveProject(): boolean {
-    //     return this.activeProject !== null;
-    // }
 }

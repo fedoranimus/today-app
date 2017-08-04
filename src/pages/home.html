@@ -1,15 +1,16 @@
 <template>
   <require from="./home.css"></require>
-  <div class="container">
-      <div class="greeting">${firstName | greeting}</div>
-      <div class="row">
-        <div class="eight columns">
-          <task-list tasks.bind="tasks"></task-list>
-        </div>
-        <div class="four columns">
-          Filter Content
-        </div>
+  <pomodoro show.bind="isSessionRunning"></pomodoro>
+  <div show.bind="!isSessionRunning" class="container">
+    <div class="greeting">${firstName | greeting}</div>
+    <div class="row">
+      <div class="eight columns">
+        <task-list tasks.bind="tasks" focus-length.bind="focusLength"></task-list>
       </div>
+      <div class="four columns">
+        Filter Content
+      </div>
+    </div>
   </div>
-  <a class="settings-link" route-href="route: settings">Settings</a>
+  <a show.bind="!isSessionRunning" class="settings-link" route-href="route: settings">Settings</a>
 </template>

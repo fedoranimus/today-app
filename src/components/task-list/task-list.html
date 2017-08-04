@@ -1,12 +1,15 @@
-<template class="task-list">
+<template>
     <require from="./task-list.css"></require>
-        <div class="task-item row" repeat.for="task of tasks" model.bind="task">
-            <div class="ten columns">
-                <div class="task-content">${task.content}</div>
-                <div class="task-due-date">${task.due_date_utc | dueDate: 'dddd, hA'}</div>
-            </div>
-            <div class="two columns center-align-child">
-                <a class="task-focus-button">Focus</a>
+        <div class="task-list">
+            <div if.bind="!hasTasks">You've completed all your tasks for today, take a break.</div>
+            <div if.bind="hasTasks" class="task-item row" repeat.for="task of tasks" model.bind="task">
+                <div class="ten columns">
+                    <div class="task-content row">${task.content}</div>
+                    <div class="task-due-date row">${task.due_date_utc | dueDate: 'dddd, hA'}</div>
+                </div>
+                <div class="two columns center-align-child">
+                    <a class="task-focus-button" click.trigger="startSession()">Focus</a>
+                </div>
             </div>
         </div>
 </template>

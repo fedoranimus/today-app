@@ -1,11 +1,12 @@
 .task-item:first-child {
-    font-size: 1.5rem;
+    font-size: 1.75rem;
 }
 
 .task-item {
     border-bottom: thin solid gray;
-    padding: .5em 0;
-    font-size: 1.125rem;
+    padding: .5em 0 0 .5em;
+    font-size: 1.25rem;
+    display: flex;
 }
 
 .task-item:hover {
@@ -26,6 +27,7 @@
     align-self: center;
 }
 
-.task-list {
+ .task-list {
     font-size: 1.15em;
-}
+    margin: 0 0 0 1em;
+} 
