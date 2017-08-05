@@ -17,7 +17,6 @@ export interface ISession {
 enum SessionState {
     Running = "running",
     Paused = "paused",
-    Stopped = "stopped",
     Completed = "completed"
 }
 
@@ -50,7 +49,11 @@ export class Pomodoro {
         }
     }
 
-    startBreak() {
+    startBreak(completedTask: boolean) {
+        if(completedTask)
+            this.completeTask();
+
+
         if(this.user.currentBreak < 3)
             this.eventAggregator.publish(new StartSessionEvent(this.user.breakLength));
         else
@@ -81,18 +84,9 @@ export class Pomodoro {
 
     timerFinished() {
         if(this.activeSession && this.activeSession.isPomodoro)
-            this.stopSession();
+            this.completeSession();
         else
             this.endBreak();
-    }
-
-    stopSession() {
-        if(this.activeSession)
-            this.activeSession.state = SessionState.Stopped;
-    }
-
-    quitSession() {
-        this.endSession();
     }
 
     completeTask() {
@@ -102,17 +96,18 @@ export class Pomodoro {
 
     endSession() {
         if(this.activeSession) {
-            this.eventAggregator.publish(new SessionEndedEvent(this.activeSession.isPomodoro, this.activeSession.length));
+            let length = this.activeSession.length - this.activeSession.remainingTime;
+            if(!this.activeSession.isPomodoro)
+                length = 0;
+
+            this.eventAggregator.publish(new SessionEndedEvent(this.activeSession.isPomodoro, length));
         }
         this.activeSession = null;
     }
 
-    completeSession(completeTask: boolean, takeBreak: boolean = true) {
+    completeSession() {
         if(this.activeSession) {
             this.activeSession.state = SessionState.Completed;
-            this.completeTask();
-            if(takeBreak)
-                this.startBreak();
         }
     }
 

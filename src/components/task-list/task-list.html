@@ -3,12 +3,16 @@
         <div class="task-list">
             <div if.bind="!hasTasks">You've completed all your tasks for today, take a break.</div>
             <div if.bind="hasTasks" class="task-item row" repeat.for="task of tasks" model.bind="task">
-                <div class="ten columns">
+                <div class="nine columns">
                     <div class="task-content row">${task.content}</div>
                     <div class="task-due-date row">${task.due_date_utc | dueDate: 'dddd, hA'}</div>
                 </div>
-                <div class="two columns center-align-child">
-                    <a class="task-focus-button" click.trigger="startSession(task)">Focus</a>
+                <div class="three columns center-align-child">
+                    <span class="action-links">
+                        <a class="task-button" click.trigger="startSession(task)">Focus</a>
+                        <span class="task-button-separator"> | </span>
+                        <a class="task-button" click.trigger="completeTask(task)">Complete</a>
+                    </span>
                 </div>
             </div>
         </div>

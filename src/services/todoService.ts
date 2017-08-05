@@ -35,48 +35,15 @@ export class TodoService {
         return this.todoist.completed.get_stats();
     }
 
-    // async getTodayTasks(): Promise<any> {
-    //     //const sync = await this.todoist.sync();
-    //     const items = await this.sync.items.filter( (item: any) => {
-    //         return moment(item.due_date_utc).toDate().toDateString() == moment().toDate().toDateString();
-    //     });
-
-    //     return items;
-    // }
-
-    // async getProjectTasks(projectId: number | null = null): Promise<Item[]> {
-    //     const sync = await this.todoist.sync();
-    //     let items = <Item[]>sync.items;
-    //     if(projectId) {
-    //         items = items.filter((item) => {
-    //             return item.project_id === projectId;
-    //         });
-    //     }
-
-    //     return items.sort((a, b) => {
-    //         return moment(b.due_date_utc).toDate().getDate() - moment(a.due_date_utc).toDate().getDate();
-    //     });
-    // }
-
     async getTasks(): Promise<Item[]> {
-        //const sync = await this.todoist.sync();
+        await this.todoist.sync();
         if(this.user.activeFilter) {
-            return [];
+            return []; //TODO
         } else {
-            await this.todoist.sync();
             return this.todoist.state.items.filter( (item: any) => {
-                return moment(item.due_date_utc).toDate().toDateString() == moment().toDate().toDateString();
+                return moment().isSame(item.due_date_utc, 'day') && item.checked === 0;
             });
         }
-        // return this.sync.items;
-        // console.log(activeProjectLocation);
-        // if(activeProjectLocation) {
-        //     return sync.items.filter((item: any) => {
-        //         return item.project_id === activeProjectLocation.projects.find(y => y.projectId == item.project_id);
-        //     });
-        // } else {
-        //     return sync.items;
-        // }
     }
 
     async completeTask(id: number) {
@@ -85,12 +52,8 @@ export class TodoService {
         item.close();
         const response = await this.todoist.commit();
         console.log(response);
+        return response;
     }
-
-    // async getProjects(): Promise<Project[]> {
-    //     const sync = await this.todoist.sync();
-    //     return sync.projects;
-    // }
 
     async getUser(): Promise<any> {
         await this.todoist.sync();

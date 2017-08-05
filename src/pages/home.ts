@@ -29,11 +29,9 @@ export class Home {
         const user = await this.todoService.getUser();
         this.firstName = user.full_name.split(" ")[0];
 
-        this.tasks = await this.todoService.getTasks();
+        this.tasks = await this.syncTasks();
 
         this.focusLength = this.user.focusLength;
-
-        console.log(await this.todoService.getSync());
 
         this.eventAggregator.subscribe(SessionStartedEvent, (event: SessionStartedEvent) => {
             this.isSessionRunning = true;
@@ -43,10 +41,18 @@ export class Home {
             this.isSessionRunning = false;
         });
 
-        this.eventAggregator.subscribe(TaskCompletedEvent, (event: TaskCompletedEvent) => {
-            if(event.completedTask) {
-                this.todoService.completeTask(event.completedTask.id);
-            }
+        this.eventAggregator.subscribe(TaskCompletedEvent, async (event: TaskCompletedEvent) => {
+            const completedTask = event.completedTask;
+            if(completedTask) {
+                this.todoService.completeTask(completedTask.id);
+                this.tasks = this.tasks.filter(task => {
+                    return task.id !== completedTask.id;
+                });
+            }        
         });
+    }
+
+    private async syncTasks() {
+        return await this.todoService.getTasks(); 
     }
 }

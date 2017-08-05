@@ -1,4 +1,4 @@
-<template>
+<template class="pomodoro">
     <require from="./pomodoro.css"></require>
     <div if.bind="activeSession.isPomodoro" with.bind="activeSession" class="session-pomodoro">
         <div if.bind="state === 'running' || state === 'paused'" class="session-info">
@@ -11,8 +11,7 @@
             </div>
         </div>
 
-        <div if.bind="state === 'stopped' || state === 'completed'" class="session-info">
-            <span if.bind="state === 'stopped'">Focus Stopped</span>
+        <div if.bind="state === 'completed'" class="session-info">
             <span if.bind="state === 'completed'">Focus Done</span>
             <div class="session-content">
                 Did you complete ${item.content}?
@@ -24,19 +23,12 @@
         </div>
         <div if.bind="state === 'paused'" class="action-buttons">
             <button class="button-primary" click.trigger="resumeSession()">Resume</button>
-            <button click.trigger="stopSession()">Stop</button>
-        </div>
-
-        <div if.bind="state === 'stopped'" class="action-buttons">
-            <button class="button-primary" click.trigger="completeSession()">Yes</button>
-            <button click.trigger="quitSession()">No</button>
-            <button click.trigger="restartSession()">continue focus</button>
+            <button click.trigger="endSession()">Stop</button>
         </div>
 
         <div if.bind="state === 'completed'" class="action-buttons">
-            <button class="button-primary" click.trigger="completeSession(false)">Yes</button> <!-- Complete, but don't start break -->
-            <button click.trigger="quitSession()">No</button>
-            <button click.trigger="resumeSession()">continue focus</button>
+            <button class="button-primary" click.trigger="startBreak(true)">Yes</button>
+            <button click.trigger="startBreak(false)">No</button>
         </div>
     </div>
 

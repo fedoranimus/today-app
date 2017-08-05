@@ -1,0 +1,16 @@
+.pomodoro {
+    top: 35%;
+    position: absolute;
+}
+
+.session-content, .session-info {
+    font-size: 2.5rem;
+}
+
+.session-time-remaining {
+    font-size: 3rem;
+}
+
+.session-pomodoro, .session-break {
+    text-align: center;
+}
