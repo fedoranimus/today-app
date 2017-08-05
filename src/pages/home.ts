@@ -4,7 +4,7 @@ import { TodoService } from '../services/todoService';
 import { User, IProjectLocation } from '../services/user';
 import { Filter, Item } from '../infrastructure/todoist';
 import { EventAggregator } from 'aurelia-event-aggregator';
-import { SessionStartedEvent, SessionCompletedEvent } from '../infrastructure/events';
+import { SessionStartedEvent, SessionEndedEvent, TaskCompletedEvent } from '../infrastructure/events';
 
 @autoinject
 export class Home {
@@ -39,8 +39,14 @@ export class Home {
             this.isSessionRunning = true;
         });
 
-        this.eventAggregator.subscribe(SessionCompletedEvent, (event: SessionCompletedEvent) => {
+        this.eventAggregator.subscribe(SessionEndedEvent, (event: SessionEndedEvent) => {
             this.isSessionRunning = false;
+        });
+
+        this.eventAggregator.subscribe(TaskCompletedEvent, (event: TaskCompletedEvent) => {
+            if(event.completedTask) {
+                this.todoService.completeTask(event.completedTask.id);
+            }
         });
     }
 }

@@ -2,6 +2,9 @@
     --background-color: rgba(30, 30, 30, 1);
     --text-color: rgba(197, 197, 197, 1);
     --hover-color: rgba(196, 196, 196, 0.2);
+    --text-hover-color: rgba(187, 187, 187, 1);
+    --primary-action-color: rgba(219, 76, 63, 1);
+    --primary-action-hover-color: rgba(194, 51, 38, 1);
 }
 
 body {
@@ -55,4 +58,22 @@ a:hover {
 .center-align-child {
     display: flex;
     align-items: center;
+}
+
+button {
+    color: var(--text-color);
+}
+
+button:hover {
+    color: var(--text-hover-color);
+}
+
+button.button-primary {
+    background-color: var(--primary-action-color);
+    border-color: var(--primary-action-color);
+}
+
+button.button-primary:hover {
+    background-color: var(--primary-action-hover-color);
+    border-color: var(--primary-action-hover-color);
 }

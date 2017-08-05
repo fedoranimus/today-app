@@ -13,9 +13,9 @@ export class TaskList {
 
     }
 
-    startSession() {
+    startSession(task: Item) {
         console.log(`Starting ${this.focusLength} millisecond session`);
-        this.eventAggregator.publish(new StartSessionEvent(this.focusLength));
+        this.eventAggregator.publish(new StartSessionEvent(this.focusLength, task));
     }
 
     @computedFrom('tasks')

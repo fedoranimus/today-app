@@ -22,7 +22,8 @@ export class TodoService {
     }
 
     async getFilters() {
-        return await this.sync.filters;
+        await this.todoist.sync();
+        return this.todoist.api.state.filters;
     }
 
     async isPremium(): Promise<boolean> {
@@ -62,9 +63,8 @@ export class TodoService {
         if(this.user.activeFilter) {
             return [];
         } else {
-            const sync = await this.todoist.sync();
-            console.log(sync);
-            return await sync.items.filter( (item: any) => {
+            await this.todoist.sync();
+            return this.todoist.state.items.filter( (item: any) => {
                 return moment(item.due_date_utc).toDate().toDateString() == moment().toDate().toDateString();
             });
         }
@@ -79,13 +79,21 @@ export class TodoService {
         // }
     }
 
+    async completeTask(id: number) {
+        await this.todoist.sync();
+        const item = this.todoist.state.items.find((task: any) => task.id === id);
+        item.close();
+        const response = await this.todoist.commit();
+        console.log(response);
+    }
+
     // async getProjects(): Promise<Project[]> {
     //     const sync = await this.todoist.sync();
     //     return sync.projects;
     // }
 
     async getUser(): Promise<any> {
-        const sync = await this.todoist.sync();
-        return sync.user;
+        await this.todoist.sync();
+        return this.todoist.state.user;
     }
 }

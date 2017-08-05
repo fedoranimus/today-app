@@ -6,9 +6,29 @@ export interface Sync {
 }
 
 export interface Item {
+    all_day: boolean;
+    assigned_by_uid: null; //TODO
+    checked: number;
+    collapsed: number;
     content: string;
+    date_added: string;
+    date_lang: string;
+    day_order: number;
     due_date_utc: string;
+    has_more_notes: boolean;
+    in_history: number;
+    indent: number;
+    is_archived: number;
+    is_deleted: number;
+    item_order: number;
+    labels: number[];
+    parent_id: number | null;
+    priority: number;
     project_id: number;
+    id: number;
+    responsible_uid: null; //TODO
+    sync_id: null; //TODO
+    user_id: number;
 }
 
 export interface Project {

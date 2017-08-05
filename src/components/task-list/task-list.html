@@ -8,7 +8,7 @@
                     <div class="task-due-date row">${task.due_date_utc | dueDate: 'dddd, hA'}</div>
                 </div>
                 <div class="two columns center-align-child">
-                    <a class="task-focus-button" click.trigger="startSession()">Focus</a>
+                    <a class="task-focus-button" click.trigger="startSession(task)">Focus</a>
                 </div>
             </div>
         </div>

@@ -25,10 +25,11 @@ export interface IProject {
 @autoinject
 export class User {
     private _pomodoroGoal: number = 8;
-    private _focusLength: number = 1500000; //25 minutes
-    private _breakLength: number = 300000; // 5 minutes
-    private _longBreakLength: number = 900000; // 15 minutes
+    private _focusLength: number = 3000; //25 minutes = 1500000 ms
+    private _breakLength: number = 1500; // 5 minutes = 300000 ms
+    private _longBreakLength: number = 5000; // 15 minutes = 900000 ms
     private _breakCount: number = 4;
+    private _currentBreak: number = 0;
     private _apiToken: string;
     private _currentLocation: Position;
     private _previousPomodoro: Date;
@@ -196,6 +197,14 @@ export class User {
         this.storage.set({ todoistToken: apiToken });
         this.container.unregister(TodoistAPI);
         this.container.registerInstance(TodoistAPI, new TodoistAPI(this._apiToken));
+    }
+
+    get currentBreak() {
+        return this._currentBreak;
+    }
+
+    set currentBreak(count: number) {
+        this._currentBreak = count;
     }
 
     
