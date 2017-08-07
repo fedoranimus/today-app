@@ -4,7 +4,7 @@ import { TodoService } from '../services/todoService';
 import { User, IProjectLocation } from '../services/user';
 import { Filter, Item } from '../infrastructure/todoist';
 import { EventAggregator } from 'aurelia-event-aggregator';
-import { SessionStartedEvent, SessionEndedEvent, TaskCompletedEvent } from '../infrastructure/events';
+import { SessionStartedEvent, SessionEndedEvent, TaskCompletedEvent, ShowToastEvent } from '../infrastructure/events';
 
 @autoinject
 export class Home {
@@ -48,6 +48,7 @@ export class Home {
                 this.tasks = this.tasks.filter(task => {
                     return task.id !== completedTask.id;
                 });
+                this.eventAggregator.publish(new ShowToastEvent(`${completedTask.content} completed`, completedTask));
             }        
         });
     }

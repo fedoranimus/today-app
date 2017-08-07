@@ -55,6 +55,14 @@ export class TodoService {
         return response;
     }
 
+    async undoTask(id: number) {
+        await this.todoist.sync();
+        const item = this.todoist.state.items.find((task: any) => task.id === id);
+        item.open();
+        const response = await this.todoist.commit();
+        return response;
+    }
+
     async getUser(): Promise<any> {
         await this.todoist.sync();
         return this.todoist.state.user;

@@ -23,3 +23,9 @@ export class TaskCompletedEvent {
         
     }
 }
+
+export class ShowToastEvent {
+    constructor(public message: string, public item: Item | null = null) {
+
+    }
+}
