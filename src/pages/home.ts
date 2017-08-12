@@ -18,8 +18,8 @@ export class Home {
         )
     }
 
-    @computedFrom('state')
+    //@computedFrom('state')
     get isSessionActive() {
-        return this.state.activeSession !== null ? true : false;
+        return this.state.activeSession !== null;
     }
 }
