@@ -1,38 +1,36 @@
 import { autoinject } from 'aurelia-framework';
-import { Item } from '../../infrastructure/todoist';
-import { EventAggregator } from 'aurelia-event-aggregator';
-import { ShowToastEvent } from '../../infrastructure/events';
+import { Store } from '../../models/store';
 
 @autoinject
 export class Toast {
     isDisplayed = false;
     message: string = "";
     canUndo = false;
-    item: Item | null = null;
 
-    constructor(private eventAggregator: EventAggregator) {
-        eventAggregator.subscribe(ShowToastEvent, (event: ShowToastEvent) => {
-            this.show(event.message, event.item);
-        });
+    constructor(private store: Store) {
+        store.toastSubject.subscribe(
+            response => this.show(response)
+        );
     }
 
-    show(message: string, item: Item | null = null) {
+    show(toast: ToastMessage) {
         this.isDisplayed = true;
-        this.message = message;
-        if(item) {
-            this.canUndo = true;
-            this.item = item;
-        }
+        this.message = toast.message;
+        this.canUndo = toast.canUndo;
+
         setTimeout(() => {
             this.message = "";
             this.canUndo = false;
             this.isDisplayed = false;
-            this.item = null;
         }, 5000);
     }
 
     undo() {
-        console.log(this.item);
-        //TODO: Emit event with item
+        this.store.undo();
     }
+}
+
+export interface ToastMessage {
+    message: string;
+    canUndo: boolean;
 }

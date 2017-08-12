@@ -2,9 +2,8 @@ import { autoinject, Aurelia, bindable, observable } from 'aurelia-framework';
 import { Storage } from '../services/storage';
 import { TodoistService } from '../services/todoistService';
 import { User, IProjectLocation } from '../services/user';
-import { Filter, Item } from '../infrastructure/todoist';
+import { Filter, Task } from '../models/todoist';
 import { EventAggregator } from 'aurelia-event-aggregator';
-import { SessionStartedEvent, SessionEndedEvent, TaskCompletedEvent, ShowToastEvent } from '../infrastructure/events';
 import { Store } from '../models/store';
 import { State } from '../models/models';
 

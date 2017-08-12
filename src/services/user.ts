@@ -3,7 +3,7 @@ import { Container } from 'aurelia-dependency-injection';
 import { autoinject, Aurelia } from 'aurelia-framework';
 import { Storage } from './storage';
 import { GeopositionTools } from './geopositionTools';
-import { Filter } from '../infrastructure/todoist';
+import { Filter } from '../models/todoist';
 
 export interface IProjectLocation {
     name: string;

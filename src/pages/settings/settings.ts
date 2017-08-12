@@ -1,6 +1,6 @@
 import { autoinject, bindable } from 'aurelia-framework';
 import { User, IProjectLocation } from '../../services/user';
-import { Project } from '../../infrastructure/todoist';
+import {  } from '../../models/todoist';
 import { GeopositionTools } from '../../services/geopositionTools';
 
 @autoinject
@@ -11,9 +11,9 @@ export class Settings {
 
     editProjectLocations = false;
 
-    selectedProject: Project;
+    selectedProject: any;
 
-    projects: Project[];
+    projects: any[];
 
     activeProjectVal: number | string;
 

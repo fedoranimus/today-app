@@ -1,8 +1,10 @@
 import { autoinject, LogManager } from 'aurelia-framework';
 import { TodoistService } from '../services/todoistService';
-import { State, Task } from './models';
+import { State } from './models';
+import { Task } from './todoist';
 import * as moment from 'moment';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { ToastMessage } from '../components/toast/toast';
 
 @autoinject
 export class Store {
@@ -12,14 +14,17 @@ export class Store {
     private initialState: State = {
         tasks: [],
         isSessionActive: false,
-        activeFilter: null
+        activeFilter: null,
+        apiToken: null
     }
 
     private _state: BehaviorSubject<State> = new BehaviorSubject(this.initialState);
 
     private lastAction: Action | null = null;
 
-   public readonly state: Observable<State> = this._state.asObservable(); //observable state, readonly so that it cannot be directly modified
+    public toastSubject: Subject<ToastMessage> = new Subject();
+
+    public readonly state: Observable<State> = this._state.asObservable(); //observable state, readonly so that it cannot be directly modified
 
     constructor(private todoistService: TodoistService) {
         this.initializeState();
@@ -30,6 +35,7 @@ export class Store {
     }
 
     public undo() {
+        console.log(`Undoing...`);
         if(this.lastAction) {
             this.lastAction.undo();
             this.lastAction = null;
@@ -51,26 +57,51 @@ export class Store {
             .subscribe(
                 response => {
                     if(filter)
-                        state.tasks = this.filterTasks(response);
-                    else
                         state.tasks = response;
+                    else
+                        state.tasks = this.filterTasks(response);
 
                     this._state.next(state);
 
                     console.log(`State updated`, state);
                 },
-            error => console.log(`Error loading tasks`));
+                error => console.log(`Error loading tasks`)
+            );
     }
 
     private filterTasks(tasks: Task[]) {
         tasks = tasks.filter((item: Task) => {
-            if(item.due_date_utc)
-                return moment().isSame(item.due_date_utc, 'day');
-            else
-                return false;
+            return item.due ? moment().isSameOrBefore(item.due.date, 'day') : false;
         });
 
         return tasks;
+    }
+
+    public closeTask(task: Task) {
+        Observable.fromPromise(this.todoistService.closeTask(task.id))
+        .subscribe( 
+            response => { 
+                this.toastSubject.next({ message: `${task.content} Completed`, canUndo: true});
+
+                this.getTasks();
+            },
+            error => {
+                this.toastSubject.next({ message: "Action Failed - Try Again", canUndo: false});
+
+                console.log(`Error completing task`);
+            }
+        );
+    }
+
+    public reopenTask(task: Task) {
+        //TODO
+    }
+
+    public getFilters() {
+        Observable.fromPromise(this.todoistService.getFilters())
+            .subscribe( 
+                response => console.log(response)
+            );
     }
 
     // public async completeTask(taskId: number) {
@@ -92,12 +123,12 @@ interface Action {
 }
 
 class CompleteTaskAction implements Action {
-    constructor(private taskId: number, private todoistService: TodoistService) {
+    constructor(private task: Task, private store: Store) {
 
     }
 
     undo() {
-        this.todoistService.uncompleteTask(this.taskId);
+        this.store.reopenTask(this.task);
     }
 }
 

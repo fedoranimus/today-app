@@ -1,4 +1,4 @@
 <template class="toast" class.bind="isDisplayed ? 'show': ''">
     <require from="./toast.css"></require>
-    ${message} <span class="action" click.trigger="undo()">Undo</span>
+    ${message} <span show.if="canUndo" class="action" click.trigger="undo()">Undo</span>
 </template>

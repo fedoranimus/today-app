@@ -26,9 +26,6 @@ export class ApiStore {
             this._apiToken = token;
 
         this.storage.set({ todoistToken: token });
-
-        this.container.unregister(TodoistAPI);
-        this.container.registerInstance(TodoistAPI, new TodoistAPI(token));
     }
 
     private async fetchToken(): Promise<string> {
