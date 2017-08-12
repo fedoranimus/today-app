@@ -1,6 +1,5 @@
 import { autoinject, bindable } from 'aurelia-framework';
 import { User, IProjectLocation } from '../../services/user';
-import { TodoService } from '../../services/todoService';
 import { Project } from '../../infrastructure/todoist';
 import { GeopositionTools } from '../../services/geopositionTools';
 
@@ -20,7 +19,7 @@ export class Settings {
 
     selectedProjectLocation: IProjectLocation;
 
-    constructor(public user: User, private todoService: TodoService) {
+    constructor() {
         
     }
 

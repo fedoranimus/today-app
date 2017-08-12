@@ -11,6 +11,7 @@ export interface Item {
     checked: number;
     collapsed: number;
     content: string;
+    date_string: string;
     date_added: string;
     date_lang: string;
     day_order: number;

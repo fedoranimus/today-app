@@ -2,7 +2,7 @@ import { autoinject } from 'aurelia-framework';
 import { EventAggregator } from 'aurelia-event-aggregator';
 import { SessionEndedEvent, SessionStartedEvent, StartSessionEvent, TaskCompletedEvent } from '../../infrastructure/events';
 import * as moment from 'moment';
-import '../../libs/moment-timer';
+import 'moment-timer';
 import { Item } from '../../infrastructure/todoist';
 import { User } from '../../services/user';
 
