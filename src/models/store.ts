@@ -59,7 +59,7 @@ export class Store {
                     if(filter)
                         state.tasks = response;
                     else
-                        state.tasks = this.filterTasks(response);
+                        state.tasks = this.filterTodayAndOverdueTasks(response);
 
                     this._state.next(state);
 
@@ -69,12 +69,10 @@ export class Store {
             );
     }
 
-    private filterTasks(tasks: Task[]) {
-        tasks = tasks.filter((item: Task) => {
+    private filterTodayAndOverdueTasks(tasks: Task[]) {
+        return tasks.filter((item: Task) => {
             return item.due ? moment().isSameOrBefore(item.due.date, 'day') : false;
         });
-
-        return tasks;
     }
 
     public closeTask(task: Task) {

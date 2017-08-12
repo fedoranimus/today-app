@@ -1,7 +1,4 @@
-import { autoinject, Aurelia } from 'aurelia-framework';
-import { Container } from 'aurelia-dependency-injection';
-import TodoistAPI from 'todoist-js';
-import * as moment from 'moment';
+import { autoinject } from 'aurelia-framework';
 import { Task } from '../models/todoist';
 import { Config, Rest } from 'aurelia-api';
 import { ApiStore } from '../apiStore';
