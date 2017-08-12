@@ -1,6 +1,6 @@
 import { autoinject, LogManager } from 'aurelia-framework';
 import { TodoistService } from '../services/todoistService';
-import { State } from './models';
+import { State, Session, SessionStatus } from './models';
 import { Task } from './todoist';
 import * as moment from 'moment';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
@@ -8,16 +8,20 @@ import { ToastMessage } from '../components/toast/toast';
 
 @autoinject
 export class Store {
-
     public logger = LogManager.getLogger("Store");
 
     private initialState: State = {
         tasks: [],
-        isSessionActive: false,
+        activeSession: null,
         activeFilter: null,
-        apiToken: null
+        currentBreak: 0,
+        settings: {
+            pomodoroLength:3000, //25 minutes = 1500000 ms
+            breakCount: 0,
+            breakLength: 1500, // 5 minutes = 300000 ms
+            longBreakLength: 5000 // 15 minutes = 900000 ms
+        }
     }
-
     private _state: BehaviorSubject<State> = new BehaviorSubject(this.initialState);
 
     private lastAction: Action | null = null;
@@ -27,10 +31,6 @@ export class Store {
     public readonly state: Observable<State> = this._state.asObservable(); //observable state, readonly so that it cannot be directly modified
 
     constructor(private todoistService: TodoistService) {
-        this.initializeState();
-    }
-
-    private async initializeState() {
         this.getTasks();
     }
 
@@ -42,12 +42,35 @@ export class Store {
         }
     }
 
-    public setSessionState(activeSession: boolean) {
+    public startSession(task: Task) {
         const state = this._state.getValue();
-        state.isSessionActive = activeSession;
-        this._state.next(state);
 
-        console.log(`State updated`, state);
+        const newSession: Session = {
+            isPomodoro: true,
+            length: state.settings.pomodoroLength,
+            task: task,
+            status: SessionStatus.Starting
+        };
+
+        state.activeSession = newSession;
+
+        this._state.next(state);
+    }
+
+    public setSessionStatus(sessionStatus: SessionStatus) {
+        const state = this._state.getValue();
+        if(state.activeSession) {
+            state.activeSession.status = sessionStatus;
+            this._state.next(state);
+        }
+    }
+
+    public endSession() {
+        const state = this._state.getValue();
+
+        state.activeSession = null;
+
+        this._state.next(state);
     }
 
     public getTasks() {
@@ -101,19 +124,6 @@ export class Store {
                 response => console.log(response)
             );
     }
-
-    // public async completeTask(taskId: number) {
-    //     if(this._state.activeFilter) {
-    //         this._state.tasks = await this.todoistService.completeTask(taskId);
-    //     }
-    //     else {
-    //         const tasks = await this.todoistService.completeTask(taskId);
-    //         this._state.tasks = tasks.filter((item: any) => {
-    //             return moment().isSame(item.due_date_utc, 'day');
-    //         });
-    //     }
-    // }
-
 }
 
 interface Action {

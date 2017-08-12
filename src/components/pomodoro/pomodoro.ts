@@ -1,31 +1,18 @@
 import { autoinject } from 'aurelia-framework';
-import { EventAggregator } from 'aurelia-event-aggregator';
 import * as moment from 'moment';
 import 'moment-timer';
 import { Task } from '../../models/todoist';
-import { User } from '../../services/user';
-
-export interface ISession {
-    isPomodoro: boolean;
-    state: SessionState;
-    length: number;
-    remainingTime: number;
-    task: Task | null;
-}
-
-enum SessionState {
-    Running = "running",
-    Paused = "paused",
-    Completed = "completed"
-}
+import { Store } from '../../models/store';
+import { State, SessionStatus } from '../../models/models';
 
 @autoinject
 export class Pomodoro {
-    
-    private activeSession: ISession | null;
     private timer: any;
     
-    constructor() {
+    constructor(private store: Store) {
+        store.state.subscribe(
+            response => this.initializeSessionData(response)
+        );
         // this.eventAggregator.subscribe(StartSessionEvent, (event: StartSessionEvent) => {
         //     const isPomodoro = event.item !== null ? true : false;
         //     if(event.item) {
@@ -38,6 +25,10 @@ export class Pomodoro {
         //     this.createTimer();
         //     this.startSession();
         // });
+    }
+
+    private initializeSessionData(state: State) {
+
     }
 
     // startSession() {

@@ -16,7 +16,7 @@ export class TaskList {
 
     startSession(task: Task) {
         //console.log(`Starting ${this.focusLength} millisecond session`);
-        this.store.setSessionState(true);
+        this.store.startSession(task);
     }
 
     completeTask(task: Task) {
