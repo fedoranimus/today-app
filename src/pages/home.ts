@@ -12,14 +12,19 @@ export class Home {
     firstName: string = "user";
     private state: State;
 
+    isSessionActive: boolean = false;
+
     constructor(private store: Store) {
         store.state.subscribe(
-            response => this.state = response
+            response => { 
+                this.state = response;
+                this.isSessionActive = response.activeSession !== null;
+            }
         )
     }
 
     //@computedFrom('state')
-    get isSessionActive() {
-        return this.state.activeSession !== null;
-    }
+    // get isSessionActive() {
+    //     return this.state.activeSession !== null;
+    // }
 }
