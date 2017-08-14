@@ -94,7 +94,7 @@ export class Store {
 
     private filterTodayAndOverdueTasks(tasks: Task[]) {
         return tasks.filter(item => {
-            return item.due ? moment().isSameOrBefore(item.due.date, 'day') : false;
+            return item.due ? moment(item.due.date).isSameOrBefore(moment(), 'day') : false;
         }).sort((a, b) => a.order - b.order);
     }
 
