@@ -1,6 +1,5 @@
 import { autoinject, Container } from 'aurelia-framework';
 import { Storage } from './services/storage';
-import TodoistAPI from 'todoist-js';
 
 @autoinject
 export class ApiStore {

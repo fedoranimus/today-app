@@ -1,4 +1,3 @@
-import TodoistAPI from 'todoist-js';
 import { Container } from 'aurelia-dependency-injection';
 import { autoinject, Aurelia } from 'aurelia-framework';
 import { Storage } from './storage';
@@ -195,8 +194,6 @@ export class User {
     set apiToken(apiToken: string) {
         this._apiToken = apiToken;
         this.storage.set({ todoistToken: apiToken });
-        this.container.unregister(TodoistAPI);
-        this.container.registerInstance(TodoistAPI, new TodoistAPI(this._apiToken));
     }
 
     get currentBreak() {

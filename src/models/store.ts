@@ -12,8 +12,8 @@ export class Store {
 
     private initialState: State = {
         tasks: [],
-        activeSession: null,
-        activeFilter: null,
+        activeSession: undefined,
+        activeFilter: undefined,
         currentBreak: 0,
         settings: {
             pomodoroLength:3000, //25 minutes = 1500000 ms
@@ -57,6 +57,21 @@ export class Store {
         this._state.next(state);
     }
 
+    public startBreak() {
+        const state = this._state.getValue();
+
+        const newSession: Session =  {
+            isPomodoro: false,
+            length: state.settings.breakLength,
+            task: undefined,
+            status: SessionStatus.Starting
+        }
+
+        state.activeSession = newSession;
+
+        this._state.next(state);
+    }
+
     public setSessionStatus(sessionStatus: SessionStatus) {
         const state = this._state.getValue();
         if(state.activeSession) {
@@ -68,7 +83,7 @@ export class Store {
     public endSession() {
         const state = this._state.getValue();
 
-        state.activeSession = null;
+        state.activeSession = undefined;
 
         this._state.next(state);
     }

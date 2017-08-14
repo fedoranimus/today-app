@@ -2,8 +2,8 @@ import { Task, Filter } from './todoist';
 
 export interface State {
     tasks: Task[];
-    activeSession: Session | null;
-    activeFilter: Filter | null;
+    activeSession?: Session;
+    activeFilter?: Filter;
     currentBreak: number;
     settings: Settings;
 }
@@ -19,7 +19,7 @@ export interface Session {
     status: SessionStatus
     isPomodoro: boolean;
     length: number;
-    task: Task | null;
+    task?: Task;
 }
 
 export enum SessionStatus {

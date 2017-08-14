@@ -2,7 +2,6 @@ import { Storage } from './services/storage';
 import { autoinject, PLATFORM, Aurelia, useView } from 'aurelia-framework';
 import { ConfiguresRouter, Router, RouterConfiguration } from 'aurelia-router';
 import { Container } from 'aurelia-dependency-injection';
-import TodoistAPI from 'todoist-js';
 import { TodoistService } from './services/todoistService';
 import { User } from './services/user';
 import { ApiStore } from './apiStore';

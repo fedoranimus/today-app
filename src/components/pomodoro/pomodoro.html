@@ -1,9 +1,9 @@
 <template class="pomodoro">
     <require from="./pomodoro.css"></require>
-    <div with.bind="state" if.bind="activeSession.isPomodoro" with.bind="activeSession" class="session-pomodoro">
-        <div if.bind="state === 'running' || state === 'paused'" class="session-info">
+    <div if.bind="isPomodoro" class="session-pomodoro">
+        <div if.bind="status === 'running' || status === 'paused'" class="session-info">
             <div class="session-content">
-                Focus on <b>${item.content}</b>
+                Focus on <b>${task.content}</b>
             </div>
             for
             <div class="session-time-remaining">
@@ -11,28 +11,28 @@
             </div>
         </div>
 
-        <div if.bind="state === 'completed'" class="session-info">
-            <span if.bind="state === 'completed'">Focus Done</span>
+        <div if.bind="status === 'completed'" class="session-info">
+            <span if.bind="status === 'completed'">Focus Done</span>
             <div class="session-content">
-                Did you complete ${item.content}?
+                Did you complete ${task.content}?
             </div>
         </div>
 
-        <div if.bind="state === 'running'" class="action-buttons">
+        <div if.bind="status === 'running'" class="action-buttons">
             <button click.trigger="pauseSession()">Pause</button>
         </div>
-        <div if.bind="state === 'paused'" class="action-buttons">
+        <div if.bind="status === 'paused'" class="action-buttons">
             <button class="button-primary" click.trigger="resumeSession()">Resume</button>
             <button click.trigger="endSession()">Stop</button>
         </div>
 
-        <div if.bind="state === 'completed'" class="action-buttons">
+        <div if.bind="status === 'completed'" class="action-buttons">
             <button class="button-primary" click.trigger="startBreak(true)">Yes</button>
             <button click.trigger="startBreak(false)">No</button>
         </div>
     </div>
 
-    <div with.bind="state" if.bind="!activeSession.isPomodoro" with.bind="activeSession" class="session-break">
+    <div if.bind="!isPomodoro" class="session-break">
         <div class="session-content">
             Take a break
         </div>
@@ -41,10 +41,10 @@
             ${ remainingTime | timeRemaining }
         </div>
 
-        <div if.bind="state === 'running'" class="action-buttons">
+        <div if.bind="status === 'running'" class="action-buttons">
             <button click.trigger="pauseSession()">Pause</button>
         </div>
-        <div if.bind="state === 'paused'" class="action-buttons">
+        <div if.bind="status === 'paused'" class="action-buttons">
             <button click.trigger="resumeSession()">Resume</button>
             <button click.trigger="endBreak()">Stop</button>
         </div>

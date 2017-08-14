@@ -1,61 +1,67 @@
 import { autoinject } from 'aurelia-framework';
 import * as moment from 'moment';
-import 'moment-timer';
+import '../../lib/moment-timer';
 import { Task } from '../../models/todoist';
 import { Store } from '../../models/store';
-import { State, SessionStatus } from '../../models/models';
+import { State, SessionStatus, Settings } from '../../models/models';
 
 @autoinject
 export class Pomodoro {
     private timer: moment.Timer;
-    private remainingTime: number;
-    
+
     state: State;
+    remainingTime: number;
+    isPomodoro: boolean;
+    status: SessionStatus;
+    task: Task;
 
     constructor(private store: Store) {
         store.state.subscribe(
-            response => this.state = response
+            response => 
+            {   
+                this.onStateChanged(response);
+            }
         );
-        // this.eventAggregator.subscribe(StartSessionEvent, (event: StartSessionEvent) => {
-        //     const isPomodoro = event.item !== null ? true : false;
-        //     if(event.item) {
-        //         this.activeSession = { isPomodoro: isPomodoro, length: event.length, remainingTime: event.length, item: event.item, state: SessionState.Running }; 
-        //     }
-        //     else {
-        //         this.activeSession = { isPomodoro: isPomodoro, length: event.length, remainingTime: event.length, item: null, state: SessionState.Running };
-        //     }
-            
-        //     this.createTimer();
-        //     this.startSession();
-        // });
     }
 
-    // startSession() {
-    //     this.timer.start();
-    //     if(this.activeSession) {
-    //         this.activeSession.state = SessionState.Running;
-    //         this.eventAggregator.publish(new SessionStartedEvent(this.activeSession.isPomodoro, this.activeSession.length));
-    //     }
-    // }
+    private onStateChanged(state: State) {
+        if(state.activeSession) {
+            this.isPomodoro = state.activeSession.isPomodoro;
+            this.status = state.activeSession.status;
 
-    // startBreak(completedTask: boolean) {
-    //     if(completedTask)
-    //         this.completeTask();
+            if(state.activeSession.task)
+                this.task = state.activeSession.task;
 
+            if(state.activeSession.status === SessionStatus.Starting) {
+                this.remainingTime = state.activeSession.length;
+                this.createTimer();
+                this.startSession();
+            }
+        }
+    }
 
-    //     if(this.user.currentBreak < 3)
-    //         this.eventAggregator.publish(new StartSessionEvent(this.user.breakLength));
-    //     else
-    //         this.eventAggregator.publish(new StartSessionEvent(this.user.longBreakLength));
-    // }
+    startSession() {
+        this.timer.start();
+        this.store.setSessionStatus(SessionStatus.Running);
+    }
 
-    // endBreak() {
-    //     this.user.currentBreak++;
-    //     if(this.user.currentBreak > 3)
-    //         this.user.currentBreak = 0;
+    startBreak(completedTask: boolean) {
+        if(completedTask)
+            this.completeTask();
 
-    //     this.endSession();
-    // }
+        this.store.startBreak();
+    }
+
+    endBreak() {
+        this.store.endSession();
+        // this.user.currentBreak++;
+        // if(this.user.currentBreak > 3)
+        //     this.user.currentBreak = 0;
+    }
+
+    endSession() {
+        this.store.endSession();
+    }
 
     createTimer() {
         this.timer = moment.duration(1, "seconds").timer({ 
@@ -64,39 +70,19 @@ export class Pomodoro {
         }, () => {
             this.remainingTime -= 1000;
             if(this.remainingTime <= 0) {   
-                //this.timerFinished();
+                this.isPomodoro ? this.completeSession() : this.endBreak();
             }
         });
     }
 
-    // timerFinished() {
-    //     if(this.activeSession && this.activeSession.isPomodoro)
-    //         this.completeSession();
-    //     else
-    //         this.endBreak();
-    // }
+    completeTask() {
+        if(this.status === SessionStatus.Completed)
+            this.store.closeTask(this.task);
+    }
 
-    // completeTask() {
-    //     if(this.activeSession)
-    //         this.eventAggregator.publish(new TaskCompletedEvent(this.activeSession.item));
-    // }
-
-    // endSession() {
-    //     if(this.activeSession) {
-    //         let length = this.activeSession.length - this.activeSession.remainingTime;
-    //         if(!this.activeSession.isPomodoro)
-    //             length = 0;
-
-    //         this.eventAggregator.publish(new SessionEndedEvent(this.activeSession.isPomodoro, length));
-    //     }
-    //     this.activeSession = null;
-    // }
-
-    // completeSession() {
-    //     if(this.activeSession) {
-    //         this.activeSession.state = SessionState.Completed;
-    //     }
-    // }
+    completeSession() {
+        this.store.setSessionStatus(SessionStatus.Completed);
+    }
 
     pauseSession() {
         this.timer.stop();

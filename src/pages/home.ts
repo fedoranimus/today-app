@@ -18,7 +18,7 @@ export class Home {
         store.state.subscribe(
             response => { 
                 this.state = response;
-                this.isSessionActive = response.activeSession !== null;
+                this.isSessionActive = response.activeSession !== undefined;
             }
         )
     }
