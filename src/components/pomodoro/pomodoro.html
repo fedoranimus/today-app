@@ -1,6 +1,6 @@
 <template class="pomodoro">
     <require from="./pomodoro.css"></require>
-    <div if.bind="activeSession.isPomodoro" with.bind="activeSession" class="session-pomodoro">
+    <div with.bind="state" if.bind="activeSession.isPomodoro" with.bind="activeSession" class="session-pomodoro">
         <div if.bind="state === 'running' || state === 'paused'" class="session-info">
             <div class="session-content">
                 Focus on <b>${item.content}</b>
@@ -32,7 +32,7 @@
         </div>
     </div>
 
-    <div if.bind="!activeSession.isPomodoro" with.bind="activeSession" class="session-break">
+    <div with.bind="state" if.bind="!activeSession.isPomodoro" with.bind="activeSession" class="session-break">
         <div class="session-content">
             Take a break
         </div>

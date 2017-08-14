@@ -7,11 +7,14 @@ import { State, SessionStatus } from '../../models/models';
 
 @autoinject
 export class Pomodoro {
-    private timer: any;
+    private timer: moment.Timer;
+    private remainingTime: number;
     
+    state: State;
+
     constructor(private store: Store) {
         store.state.subscribe(
-            response => this.initializeSessionData(response)
+            response => this.state = response
         );
         // this.eventAggregator.subscribe(StartSessionEvent, (event: StartSessionEvent) => {
         //     const isPomodoro = event.item !== null ? true : false;
@@ -25,10 +28,6 @@ export class Pomodoro {
         //     this.createTimer();
         //     this.startSession();
         // });
-    }
-
-    private initializeSessionData(state: State) {
-
     }
 
     // startSession() {
@@ -58,19 +57,17 @@ export class Pomodoro {
     //     this.endSession();
     // }
 
-    // createTimer() {
-    //     this.timer = moment.duration(1, "seconds").timer({ 
-    //         loop: true,
-    //         start: false
-    //     }, () => {
-    //         if(this.activeSession) {
-    //             this.activeSession.remainingTime -= 1000;
-    //             if(this.activeSession.remainingTime <= 0) {   
-    //                 this.timerFinished();
-    //             }
-    //         }
-    //     });
-    // }
+    createTimer() {
+        this.timer = moment.duration(1, "seconds").timer({ 
+            loop: true,
+            start: false
+        }, () => {
+            this.remainingTime -= 1000;
+            if(this.remainingTime <= 0) {   
+                //this.timerFinished();
+            }
+        });
+    }
 
     // timerFinished() {
     //     if(this.activeSession && this.activeSession.isPomodoro)
@@ -101,20 +98,13 @@ export class Pomodoro {
     //     }
     // }
 
-    // pauseSession() {
-    //     this.timer.stop();
-    //     if(this.activeSession)
-    //         this.activeSession.state = SessionState.Paused;
-    // }
+    pauseSession() {
+        this.timer.stop();
+        this.store.setSessionStatus(SessionStatus.Paused);
+    }
 
-    // resumeSession() {
-    //     this.timer.start();
-    //     if(this.activeSession)
-    //         this.activeSession.state = SessionState.Running;
-    // }
-
-    // restartSession() {
-    //     this.createTimer();
-    //     this.startSession();
-    // }
+    resumeSession() {
+        this.timer.start();
+        this.store.setSessionStatus(SessionStatus.Running);
+    }
 }
