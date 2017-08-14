@@ -79,10 +79,7 @@ export class Store {
         Observable.fromPromise(this.todoistService.getTasks(filter))
             .subscribe(
                 response => {
-                    if(filter)
-                        state.tasks = response;
-                    else
-                        state.tasks = this.filterTodayAndOverdueTasks(response);
+                    state.tasks = filter ? response : this.filterTodayAndOverdueTasks(response);
 
                     this._state.next(state);
 
