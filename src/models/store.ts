@@ -97,18 +97,18 @@ export class Store {
 
     public closeTask(task: Task) {
         Observable.fromPromise(this.todoistService.closeTask(task.id))
-        .subscribe( 
-            response => { 
-                this.toastSubject.next({ message: `${task.content} Completed`, canUndo: true});
+            .subscribe( 
+                response => { 
+                    this.toastSubject.next({ message: `${task.content} Completed`, canUndo: true });
 
-                this.getTasks();
-            },
-            error => {
-                this.toastSubject.next({ message: "Action Failed - Try Again", canUndo: false});
+                    this.getTasks();
+                },
+                error => {
+                    this.toastSubject.next({ message: "Action Failed - Try Again", canUndo: false});
 
-                console.log(`Error completing task`);
-            }
-        );
+                    console.log(`Error completing task`);
+                }
+            );
     }
 
     public reopenTask(task: Task) {

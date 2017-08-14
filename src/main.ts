@@ -1,6 +1,5 @@
 import { Aurelia, PLATFORM } from 'aurelia-framework';
 import { ApiStore } from './apiStore';
-import { Config } from 'aurelia-api';
 
 
 export function configure(aurelia: Aurelia): void {    
@@ -8,10 +7,7 @@ export function configure(aurelia: Aurelia): void {
         .standardConfiguration()
         .developmentLogging()
         .feature(PLATFORM.moduleName('components/index'))
-        .feature(PLATFORM.moduleName('value-converters/index'))
-        .plugin(PLATFORM.moduleName('aurelia-api'), (config: Config) => {
-            config.registerEndpoint('todoist', 'https://beta.todoist.com/API/v8/');
-        });
+        .feature(PLATFORM.moduleName('value-converters/index'));
 
     const apiStore = <ApiStore>aurelia.container.get(ApiStore);
 
