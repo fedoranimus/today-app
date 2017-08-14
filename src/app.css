@@ -50,11 +50,6 @@ a:hover {
     right: 1em;
 }
 
-.activate {
-    display: flex;
-    flex-direction: column;
-}
-
 .center-align-child {
     display: flex;
     align-items: center;

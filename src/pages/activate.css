@@ -1,0 +1,22 @@
+.activate {
+    display: flex;
+    flex-direction: column;
+    top: 30%;
+    position: absolute;
+}
+
+.activate form {
+    display: flex;
+    flex-direction: row;
+}
+
+.activate form input {
+    flex-grow: 1;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.activate form button {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}

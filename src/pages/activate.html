@@ -1,11 +1,10 @@
 <template>
+    <require from="./activate.css"></require>
     <div class="activate">
-        <h2>Enter your Todoist API Token</h2>
-        <form class="" if.bind="!hasKey" submit.delegate="registerApiKey()">
-            <span>
-                <input placeholder="Api Token" value.bind="keyInput" required>
-                <button class="button-primary" type="submit" disabled.bind="!isKeyValid">Submit</button>
-            </span>
+        <h2>Enter your <a href="https://en.todoist.com/Users/viewPrefs?page=authorizations" target="_blank">Todoist API Token</a></h2>
+        <form if.bind="!hasKey" submit.delegate="registerApiKey()">
+            <input type="text" placeholder="Todoist API Token" value.bind="keyInput" required>
+            <button class="button-primary" type="submit" disabled.bind="!isKeyValid">Submit</button>
         </form>
     </div>
 </template>
