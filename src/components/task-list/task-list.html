@@ -5,7 +5,7 @@
             <div if.bind="hasTasks" class="task-item row" repeat.for="task of tasks" model.bind="task">
                 <div class="nine columns">
                     <div class="task-content row">${task.content}</div>
-                    <div class="task-due-date row">${task.due_date_utc | dueDate: 'dddd, hA'}</div>
+                    <div class="task-due-date row">${task.due.date | dueDate: 'dddd, hA'}</div>
                 </div>
                 <div class="three columns center-align-child">
                     <span class="action-links">

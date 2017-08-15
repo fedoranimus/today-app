@@ -28,3 +28,11 @@ export interface Filter {
     item_order: number;
     is_deleted: number;
 }
+
+export interface Project {
+    id: number;
+    name: string;
+    order: number;
+    indent: number;
+    comment_count: number;
+}

@@ -16,10 +16,10 @@ export class Store {
         activeFilter: undefined,
         currentBreak: 0,
         settings: {
-            pomodoroLength:3000, //25 minutes = 1500000 ms
+            pomodoroLength: 1500000, //25 minutes = 1500000 ms
             breakCount: 0,
-            breakLength: 1500, // 5 minutes = 300000 ms
-            longBreakLength: 5000 // 15 minutes = 900000 ms
+            breakLength: 300000, // 5 minutes = 300000 ms
+            longBreakLength: 900000 // 15 minutes = 900000 ms
         }
     }
     private _state: BehaviorSubject<State> = new BehaviorSubject(this.initialState);

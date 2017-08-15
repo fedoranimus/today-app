@@ -2,16 +2,16 @@
   <require from="./home.css"></require>
   <pomodoro show.bind="isSessionActive"></pomodoro>
   <div show.bind="!isSessionActive" class="container">
-    <div class="greeting">${firstName | greeting}</div>
+    <div class="greeting">${firstName | greeting} - Today's Tasks</div>
     <div class="row">
-      <div class="eight columns">
+      <!--<div class="eight columns">-->
         <task-list></task-list>
-      </div>
-      <div class="four columns">
+      <!--</div>-->
+      <!-- <div class="four columns">
         Filter Content
-      </div>
+      </div> -->
     </div>
   </div>
-  <a show.bind="!isSessionActive" class="settings-link" route-href="route: settings">Settings</a>
+  <!-- <a show.bind="!isSessionActive" class="settings-link" route-href="route: settings">Settings</a> -->
   <toast></toast>
 </template>

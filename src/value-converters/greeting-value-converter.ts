@@ -9,11 +9,11 @@ export class GreetingValueConverter {
         const currentHour = parseFloat(moment().format('HH'));
         
         if(currentHour >= afternoon && currentHour <= evening)
-            greeting = `Good afternoon, ${name}`;
+            greeting = `Good afternoon`; //, ${name}
         else if(currentHour >= evening)
-            greeting = `Good evening, ${name}`;
+            greeting = `Good evening`; //, ${name}
         else
-            greeting = `Good morning, ${name}`;
+            greeting = `Good morning`; //, ${name}
 
         return greeting;
     }

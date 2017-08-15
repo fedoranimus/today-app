@@ -1,5 +1,6 @@
 .task-item {
-    border-bottom: thin solid gray;
+    border-bottom: thin solid;
+    border-bottom-color: var(--hover-color);
     padding: .5em 0 0 .5em;
     font-size: 1.25rem;
     display: flex;
@@ -30,9 +31,13 @@
 
  .task-list {
     font-size: 1.15em;
-    margin: 0 0 0 1em;
 } 
 
 .action-links {
     flex-direction: row;
+    font-size: 1.6rem;
+}
+
+.task-content {
+    font-size: 1.6rem;
 }
