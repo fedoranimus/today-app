@@ -55,6 +55,9 @@ const config: webpack.Configuration = {
             },
             {
                 from: 'index.html'
+            },
+            {
+                from: 'src/icons'
             }
         ])
     ]
