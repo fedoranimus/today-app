@@ -3,12 +3,17 @@
     position: absolute;
 }
 
-.session-content, .session-info {
-    font-size: 2.5rem;
+.session-content  {
+    font-size: 3rem;
 }
 
-.session-time-remaining {
-    font-size: 3rem;
+.session-task-text {
+    color: var(--primary-action-color);
+    font-weight: bold;
+}
+
+.session-time-remaining, .session-info {
+    font-size: 2rem;
 }
 
 .session-pomodoro, .session-break {

@@ -3,7 +3,7 @@
     <div if.bind="isPomodoro" class="session-pomodoro">
         <div if.bind="status === 'running' || status === 'paused'" class="session-info">
             <div class="session-content">
-                Focus on <b>${task.content}</b>
+                <span class="session-task-text">${task.content}</span>
             </div>
             for
             <div class="session-time-remaining">

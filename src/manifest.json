@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "Today",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "description": "An extension to help you complete today's Todoist tasks by providing Pomodoro integration into the new tab of your browser!",
     "author": "Tim Turner",
     "chrome_url_overrides": {
