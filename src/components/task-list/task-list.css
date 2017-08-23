@@ -1,7 +1,7 @@
 .task-item {
     border-bottom: thin solid;
     border-bottom-color: var(--hover-color);
-    padding: .5em 0 0 .5em;
+    padding: .75rem 0 .75rem 1rem;
     font-size: 1.25rem;
     display: flex;
 }
@@ -12,6 +12,10 @@
 
 .task-button {
     display: none;
+}
+
+.task-button .fa {
+    padding-right: .25rem;
 }
 
 .task-button-separator {

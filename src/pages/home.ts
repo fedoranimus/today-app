@@ -6,10 +6,12 @@ import { Filter, Task } from '../models/todoist';
 import { EventAggregator } from 'aurelia-event-aggregator';
 import { Store } from '../models/store';
 import { State } from '../models/models';
+import * as moment from 'moment';
 
 @autoinject
 export class Home {
     firstName: string = "user";
+    date: string = moment().format("ddd Do, MMM");
     private state: State;
 
     isSessionActive: boolean = false;

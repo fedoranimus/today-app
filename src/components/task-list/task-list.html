@@ -3,15 +3,15 @@
         <div class="task-list">
             <div if.bind="!hasTasks">You've completed all your tasks for today, take a break.</div>
             <div if.bind="hasTasks" class="task-item row" repeat.for="task of tasks" model.bind="task">
-                <div class="nine columns">
+                <div class="eight columns">
                     <div class="task-content row">${task.content}</div>
                     <div class="task-due-date row">${task.due.date | dueDate: 'dddd, hA'}</div>
                 </div>
-                <div class="three columns center-align-child">
+                <div class="four columns center-align-child">
                     <span class="action-links">
-                        <a class="task-button" click.trigger="startSession(task)">Focus</a>
+                        <a class="task-button" click.trigger="startSession(task)"><i class="fa fa-clock-o" aria-hidden="true"></i>Focus</a>
                         <span class="task-button-separator"> | </span>
-                        <a class="task-button" click.trigger="completeTask(task)">Complete</a>
+                        <a class="task-button" click.trigger="completeTask(task)"><i class="fa fa-check" aria-hidden="true"></i>Complete</a>
                     </span>
                 </div>
             </div>
