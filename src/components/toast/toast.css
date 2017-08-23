@@ -6,7 +6,7 @@
     text-align:center;
     z-index: 1;
     min-width: 250px;
-    margin-left: -125;
+    margin-left: -125px;
     border-radius: 2px;
     padding: 15px;
     background-color: var(--background-color);
