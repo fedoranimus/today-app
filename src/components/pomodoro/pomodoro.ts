@@ -7,13 +7,13 @@ import { State, SessionStatus, Settings } from '../../models/models';
 
 @autoinject
 export class Pomodoro {
-    private timer: moment.Timer;
+    private timer!: moment.Timer;
 
-    state: State;
-    remainingTime: number;
-    isPomodoro: boolean;
-    status: SessionStatus;
-    task: Task;
+    state!: State;
+    remainingTime: number = 0;
+    isPomodoro: boolean = false;
+    status!: SessionStatus;
+    task!: Task;
 
     constructor(private store: Store) {
         store.state.subscribe(

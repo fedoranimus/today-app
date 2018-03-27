@@ -5,19 +5,19 @@ import { GeopositionTools } from '../../services/geopositionTools';
 
 @autoinject
 export class Settings {
-    fullName: string;
+    // fullName: string;
     
-    @bindable projectLocations: IProjectLocation[];
+    // @bindable projectLocations: IProjectLocation[];
 
-    editProjectLocations = false;
+    // editProjectLocations = false;
 
-    selectedProject: any;
+    // selectedProject: any;
 
-    projects: any[];
+    // projects: any[];
 
-    activeProjectVal: number | string;
+    // activeProjectVal: number | string;
 
-    selectedProjectLocation: IProjectLocation;
+    // selectedProjectLocation: IProjectLocation;
 
     constructor() {
         

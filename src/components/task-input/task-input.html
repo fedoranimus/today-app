@@ -1,0 +1,7 @@
+<template>
+    <require from="./task-input.css"></require>
+    <form style="display: flex" submit.delegate="createTask()">
+        <input class="u-full-width inline-input" type="text" placeholder="New task" value.bind="taskContent">
+        <input class="button-primary inline-button" type="submit" value="Create">
+    </form>
+</template>

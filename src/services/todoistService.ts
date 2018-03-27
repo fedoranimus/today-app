@@ -33,4 +33,11 @@ export class TodoistService {
         const uri = `${this.endpoint}tasks/${id}/reopen?token=${token}`;
         return this.httpClient.fetch(uri, { method: "POST" });
     }
+
+    async createTask(content: string) {
+        const token = await this.apiStore.apiToken;
+        const uri = `${this.endpoint}tasks?token=${token}`;
+        const body = { content: content, due_datetime: new Date().toISOString() };
+        return this.httpClient.fetch(uri, { method: "POST", body: JSON.stringify(body) });
+    }
 }

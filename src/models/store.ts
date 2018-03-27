@@ -126,6 +126,20 @@ export class Store {
             );
     }
 
+    public createTask(taskContent: string) {
+        Observable.fromPromise(this.todoistService.createTask(taskContent))
+            .subscribe(
+                response => {
+                    this.toastSubject.next({ message: `${taskContent} Created`, canUndo: false });
+                    this.getTasks();
+                },
+                error => {
+                    this.toastSubject.next({ message: "Action Failed - Try Again", canUndo: false });
+                    console.log(`Error creating task`);
+                }
+            )
+    }
+
     public reopenTask(task: Task) {
         //TODO
     }

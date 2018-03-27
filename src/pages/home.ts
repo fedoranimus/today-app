@@ -12,7 +12,7 @@ import * as moment from 'moment';
 export class Home {
     firstName: string = "user";
     date: string = moment().format("ddd Do, MMM");
-    private state: State;
+    private state!: State;
 
     isSessionActive: boolean = false;
 

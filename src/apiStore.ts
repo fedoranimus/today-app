@@ -3,7 +3,7 @@ import { Storage } from './services/storage';
 
 @autoinject
 export class ApiStore {
-    private _apiToken: string;
+    private _apiToken: string = "";
 
     constructor(private container: Container, private storage: Storage) {
         this.init();

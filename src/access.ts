@@ -10,7 +10,7 @@ import { ApiStore } from './apiStore';
 @autoinject
 export class Access implements ConfiguresRouter {
     
-    private apiKey: string;
+    private apiKey: string = "";
     private todoist: any;
 
     constructor(private container: Container, private router: Router, private aurelia: Aurelia, private apiStore: ApiStore) {}

@@ -6,6 +6,7 @@ export function configure(config: FrameworkConfiguration) {
             PLATFORM.moduleName('./pomodoro/pomodoro'), 
             PLATFORM.moduleName('./task-list/task-list'),
             PLATFORM.moduleName('./filter-list/filter-list'),
-            PLATFORM.moduleName('./toast/toast')
+            PLATFORM.moduleName('./toast/toast'),
+            PLATFORM.moduleName('./task-input/task-input')
         ]);
 }

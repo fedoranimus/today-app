@@ -29,9 +29,9 @@ export class User {
     private _longBreakLength: number = 5000; // 15 minutes = 900000 ms
     private _breakCount: number = 4;
     private _currentBreak: number = 0;
-    private _apiToken: string;
-    private _currentLocation: Position;
-    private _previousPomodoro: Date;
+    private _apiToken: string = "";
+    private _currentLocation!: Position;
+    private _previousPomodoro!: Date;
     private _pomodoroCount: number = 0;
 
     private _locationThreshold: number = 1;
