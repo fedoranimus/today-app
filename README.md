@@ -4,6 +4,10 @@ A minimal sample of a newtab Chrome Extension written in Typescript with Aurelia
 
 ## Getting Started
 
+### Chrome Webstore
+Grab the latest version of the extension from the [Chrome Webstore](https://chrome.google.com/webstore/detail/today/nlaopmodobgckcknfffmkpcgfoilbeig).
+
+### Manual build
 1. `npm i`
 1. `npm run build`
 1. Load extension from `chrome://extensions/`
