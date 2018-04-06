@@ -10,5 +10,6 @@ export class TaskInput {
 
     createTask() {
         this.store.createTask(this.taskContent);
+        this.taskContent = '';
     }
 }
